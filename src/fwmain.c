@@ -143,7 +143,7 @@ int main(int argc, char *argv[])
 	}
 
 	mod_init();
-	mod_play("./musics/backgrnd.mod");
+	mod_play("./sounds/backgrnd.mod");
 
 	if (initgraf())
 	{

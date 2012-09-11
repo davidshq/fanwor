@@ -227,7 +227,7 @@ void reactmenu()
 		sndpsgflag=dlgptr[PSGSND].ob_state&SELECTED;
 		sndsamflag=dlgptr[SAMSND].ob_state&SELECTED;
 		if(sndmodflag && ptyp && !playflag)
-			mod_play("musics\\zelda.mod");
+			mod_play("sounds\\backgrnd.mod");
 		if(!sndmodflag && ptyp && playflag)
 			mod_stop();
 		if(sndmodflag && ptyp!=1)

@@ -109,7 +109,7 @@ long sound_init(void)
 	/* Load the sample music files */
 	for (i = 0; i < SAM_ANZAHL; i++)
 	{
-		strcpy(aktsamname, "./musics/");
+		strcpy(aktsamname, "./sounds/");
 		strcat(aktsamname, samnames[i]);
 		samples[i] = Mix_LoadWAV(aktsamname);
 		if ( samples[i] == NULL )

@@ -182,15 +182,15 @@ int mod_init(void)
 		{
 		case 0:
 			if( (scookie & 0x1E)!=0x1E ) continue;
-			sname="musics\\dsp.spi";
+			sname="sounds\\dsp.spi";
 			break;
 		case 1:
 			if( (scookie & 0x2)!=0x2 ) continue;
-			sname="musics\\dma.spi";
+			sname="sounds\\dma.spi";
 			break;
 		case 2:
 			if( (scookie & 0x20)!=0x20 ) continue;
-			sname="musics\\xbios.spi";
+			sname="sounds\\xbios.spi";
 			break;
 		}
 		if( (sfh=Fopen(sname, 0)) > 0L )	/* Check if the SPI exists */
@@ -403,7 +403,7 @@ long sound_init(void)
 
 	for(i=0; i<SAM_ANZAHL; i++)
 	{
-		strcpy(samname, "musics\\");
+		strcpy(samname, "sounds\\");
 		strcat(samname, samples[i].name);
 		fhndl=Fopen(samname, 0);
 		if(fhndl<0) return(fhndl);
