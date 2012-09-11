@@ -17,6 +17,7 @@
 #include "fwgraf.h"
 #include "fwmain.h"
 #include "loadpng.h"
+#include "fwguiini.h"
 
 #ifndef FALSE
 #define FALSE 0

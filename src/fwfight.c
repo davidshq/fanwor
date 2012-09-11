@@ -17,6 +17,7 @@
 #include "fwreact.h"
 #include "fwdata.h"
 #include "fwmusic.h"
+#include "fwfight.h"
 
 #ifdef SOZOBON
 #pragma -CUS

@@ -12,6 +12,7 @@
 #ifdef WITH_SOUND
 
 #include <SDL_mixer.h>
+#include "fwmusic.h"
 
 #ifndef FALSE
 #define FALSE 0

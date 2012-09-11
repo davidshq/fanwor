@@ -57,22 +57,22 @@ void errfatldlg(char *errstr)
 }
 
 
-/* ***Tastendrücke*** */
-void keyklicks(void)
+/**
+ * Called when a key has been pressed
+ */
+static void keyklicks(void)
 {
 	Uint8 *keys;
 
-	keys=SDL_GetKeyState(NULL);
-	if( keys[SDLK_ESCAPE]==SDL_PRESSED )  flag_quit=TRUE;
+	keys = SDL_GetKeyState(NULL);
+	if (keys[SDLK_ESCAPE] == SDL_PRESSED)  flag_quit=TRUE;
 	tdirectn=0;
-	if( keys[SDLK_UP]==SDL_PRESSED )      tdirectn=1;
-	if( keys[SDLK_RIGHT]==SDL_PRESSED )   tdirectn=2;
-	if( keys[SDLK_DOWN]==SDL_PRESSED )    tdirectn=3;
-	if( keys[SDLK_LEFT]==SDL_PRESSED )    tdirectn=4;
-	if( keys[SDLK_SPACE]==SDL_PRESSED )   tdirectn=128;
-
+	if (keys[SDLK_UP] == SDL_PRESSED)      tdirectn=1;
+	if (keys[SDLK_RIGHT] == SDL_PRESSED)   tdirectn=2;
+	if (keys[SDLK_DOWN] == SDL_PRESSED)    tdirectn=3;
+	if (keys[SDLK_LEFT] == SDL_PRESSED)    tdirectn=4;
+	if (keys[SDLK_SPACE] == SDL_PRESSED)   tdirectn=128;
 }
-
 
 
 /* ***Event function*** */

@@ -15,7 +15,8 @@ LIBS_sdl = -lpng $(shell sdl-config --libs) -lz $(SOUNDLIB)
 LIBS_atari = -laes -lvdi
 
 # System specific CFLAGS:
-CFL_sdl = $(shell sdl-config --cflags) $(SOUNDCFL) -g -O2 -Wall
+CFL_sdl = $(shell sdl-config --cflags) $(SOUNDCFL) -g -O2 \
+	  -Wall -Wmissing-prototypes -Wstrict-prototypes
 CFL_atari = 
 
 

@@ -18,7 +18,7 @@
 #include "fwguiini.h"
 #include "fwgui.h"
 #include "loadpng.h"
-
+#include "fwgraf.h"
 
 #define min(a,b) ((a)<(b)?(a):(b))
 #define max(a,b) ((a)>(b)?(a):(b))
@@ -31,9 +31,10 @@ SDL_Surface *spritegfx;
 SDL_Surface *fontgfx;
 
 
-
-/* ***Palette setzen*** */
-void setpal(SDL_Palette *palette)
+/**
+ * Create palette
+ */
+static void setpal(SDL_Palette *palette)
 {
 	static SDL_Color *colors=NULL;
 	int ncolors=256;
@@ -86,8 +87,10 @@ void write_hp_gold()
 }
 
 
-/* ***Draw window using the offscreen bitmap*** */
-void drwindow(SDL_Rect *xywh)
+/**
+ * Draw window using the offscreen bitmap
+ */
+static void drwindow(SDL_Rect *xywh)
 {
 	SDL_BlitSurface(offscrn, xywh, sdlscrn, xywh);
 	SDL_UpdateRects(sdlscrn, 1, xywh);

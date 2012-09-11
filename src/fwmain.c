@@ -21,7 +21,7 @@
 #include "fwreact.h"
 #include "fwfight.h"
 #include "fwmusic.h"
-
+#include "fwmain.h"
 
 int g_argc;
 char **g_argv;
@@ -95,7 +95,38 @@ void addsprite(short index, short x, short y)
 }
 
 
-/* ***Hauptschleife*** */
+/**
+ * Set variables to initial values
+ */
+static void init_vars(void)
+{
+	room_x = 7;
+	room_y = 7;
+	roomnr = 0;	/* Anfangswerte setzen */
+	sprites[0].class = 0;
+	sprites[0].index = 0;
+	sprites[0].x = sprites[0].oldx = 304;
+	sprites[0].y = sprites[0].oldy = 184;
+	sprites[0].xpos = sprites[0].oldxpos = sprites[0].x/32;
+	sprites[0].ypos = sprites[0].oldypos = sprites[0].y/32;
+	sprites[0].hp = 20;
+	sprites[0].directn = 3;
+	sprites[0].anim = 0;
+	sprites[0].step = 1;
+	sprites[0].counter = 0;
+	sprites[0].maxcnter = 19;
+	sprites[0].grfyoffset[0] = 0;
+	sprites[0].grfyoffset[1] = 64;
+	sprites[0].grfyoffset[2] = 128;
+	sprites[0].grfyoffset[3] = 192;
+	spritenr = 1;
+	gold = 0;
+	flag_ende = FALSE;
+}
+
+/**
+ * The main loop
+ */
 int main(int argc, char *argv[])
 {
 	g_argc=argc;
@@ -107,10 +138,12 @@ int main(int argc, char *argv[])
 		return -1;
 
 	if (sound_init())
+	{
 		alertdlg("Could not load\nthe sound samples");
+	}
 
 	mod_init();
-	mod_play("./musics/zelda.mod");
+	mod_play("./musics/backgrnd.mod");
 
 	if (initgraf())
 	{
@@ -122,35 +155,13 @@ int main(int argc, char *argv[])
 
 	do
 	{
-
 		showpicture("titel");
 
-		room_x=7;
-		room_y=7;
-		roomnr=0;	/* Anfangswerte setzen */
-		sprites[0].class=0;
-		sprites[0].index=0;
-		sprites[0].x=sprites[0].oldx=304;
-		sprites[0].y=sprites[0].oldy=184;
-		sprites[0].xpos=sprites[0].oldxpos=sprites[0].x/32;
-		sprites[0].ypos=sprites[0].oldypos=sprites[0].y/32;
-		sprites[0].hp=20;
-		sprites[0].directn=3;
-		sprites[0].anim=0;
-		sprites[0].step=1;
-		sprites[0].counter=0;
-		sprites[0].maxcnter=19;
-		sprites[0].grfyoffset[0]=0;
-		sprites[0].grfyoffset[1]=64;
-		sprites[0].grfyoffset[2]=128;
-		sprites[0].grfyoffset[3]=192;
-		spritenr=1;
-		gold=0;
-		flag_ende=FALSE;
+		init_vars();
 
 		write_hp_gold();
 
-		loadroom();			/* 1. Raum laden + zeichnen */
+		loadroom();			/* Load 1st room and draw it */
 
 		do
 		{

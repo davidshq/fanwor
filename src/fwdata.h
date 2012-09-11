@@ -12,6 +12,6 @@
 
 extern SPRTTABL spritetable[DIFSPRTNUM];
 
-void setsprttabl();
+void setsprttabl(void);
 
 #endif

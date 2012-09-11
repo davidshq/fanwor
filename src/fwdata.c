@@ -11,6 +11,7 @@
 /*************************************************/
 
 #include "fwdefs.h"
+#include "fwdata.h"
 
 #define WPST 2
 #define ENST 3

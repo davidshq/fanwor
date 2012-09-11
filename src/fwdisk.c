@@ -18,6 +18,7 @@
 #include "fwgraf.h"
 #include "fwmain.h"
 #include "fwdata.h"
+#include "fwdisk.h"
 
 #ifdef SOZOBON
 #define USEBACKSLASH
@@ -36,7 +37,7 @@ extern char spec_gemz[8];
 
 
 
-unsigned short swap_short(unsigned short in)
+static unsigned short swap_short(unsigned short in)
 {
 	unsigned short out;
 	out=((char)in)<<8;
@@ -44,7 +45,7 @@ unsigned short swap_short(unsigned short in)
 	return out;
 }
 
-unsigned long swap_long(unsigned long in)
+static unsigned long swap_long(unsigned long in)
 {
 	unsigned long out;
 	unsigned short o1, o2;

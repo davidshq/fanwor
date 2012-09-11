@@ -7,11 +7,11 @@
 #include <SDL.h>
 
 
-void drawsprites();
+void drawsprites(void);
 void clearsprite(short nr);
 void drawblock(short xpos, short ypos, short num);
 void offscr2win(short xpos, short ypos, short width, short height);
-void write_hp_gold();
+void write_hp_gold(void);
 int showpicture(char *name);
 
 extern SDL_Surface *sdlscrn;

@@ -16,6 +16,7 @@
 #include "fwdisk.h"
 #include "fwdata.h"
 #include "fwmusic.h"
+#include "fwreact.h"
 
 
 /* ** Variables: ** */

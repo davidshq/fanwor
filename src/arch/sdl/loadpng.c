@@ -45,11 +45,12 @@
 #define IMG_SetError	SDL_SetError
 
 #include <png.h>
+#include "loadpng.h"
 
 #define PNG_BYTES_TO_CHECK 4
 
 /* See if an image is contained in a data source */
-int isPNG(SDL_RWops *src)
+static int isPNG(SDL_RWops *src)
 {
 	char buf[PNG_BYTES_TO_CHECK];
 
