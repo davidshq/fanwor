@@ -111,9 +111,7 @@ void errfatldlg(char *errstr)
 }
 
 
-
-
-/* ***Messagehandler für die Fensterdialoge*** */
+/* *** Message handler for the window dialogs *** */
 void wdmsgs(int msgbf[])
 {
 	if( msgbf[0]==WM_REDRAW )  drwindow((GRECT *)&msgbf[4]);

@@ -1,4 +1,4 @@
-/* **** Prototypen & defines für fwmusic.c **** */
+/* **** Prototypes and defines for fwmusic.c **** */
 
 #ifndef _FWMUSIC_H
 #define _FWMUSIC_H

@@ -26,18 +26,18 @@
 int g_argc;
 char **g_argv;
 
-unsigned char tdirectn;            /* Enthält die Richtung, in die der Held laufen soll */
-short alrdyhit;                    /* Feuerknopf dauernt gedrückt? */
+unsigned char tdirectn;            /* The direction the hero should walk to */
+short alrdyhit;                    /* Firebutton held down? */
 unsigned char room[128][128];      /* Room data */
 unsigned char ffield[128][128];    /* Room flags */
 char room_x, room_y;               /* Raumkoordinaten */
 unsigned char roomnr;              /* Gruppennummer des Raumes */
 short gold;                        /* Goldvorrat */
 
-SPRT sprites[MAXSPRTNR];         /* Die Sprites */
-short spritenr;                  /* Anzahl der Sprites */
-short doornr;                    /* Anzahl der Türen */
-DOOR doors[MAXDOORNR];           /* Die Türen */
+SPRT sprites[MAXSPRTNR];           /* The sprites on the screen */
+short spritenr;                    /* The number of sprites */
+short doornr;                      /* The amount of doors */
+DOOR doors[MAXDOORNR];             /* The doors of the current room */
 short rwx=0, rwy=0, rww=16, rwh=11;
 short r_width=16, r_height=11;
 

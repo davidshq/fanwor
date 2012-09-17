@@ -189,7 +189,7 @@ int initGUI(void)
 	deskclip[3]=desky+deskh-1;
 	vs_clip(vhndl, 1, deskclip);
 
-	menu_bar(menudlg, 1);        /* Menü darstellen */
+	menu_bar(menudlg, 1);        /* Display the menu */
 
 	/* Try to tell the AES that we understand AP_TERM */
 	if( (appl_xgetinfo(10, &agi1, &agi2, &agi3, &agi4) && agi1&0x0FF>=9)
@@ -455,7 +455,7 @@ long initgraf(void)
 	xy[0]=xy[1]=xy[4]=xy[5]=0;
 	xy[2]=xy[6]=31;
 	xy[3]=xy[7]=mbuffdb.fd_h-1;
-	vro_cpyfm(vhndl, 0, xy, &mbuffdb, &mbuffdb); /* Buffer zuerst l”schen */
+	vro_cpyfm(vhndl, 0, xy, &mbuffdb, &mbuffdb); /* First clear the buffer */
 	mptrs=(long *)loadfdb.fd_addr;
 	for(i=0; i<bipp; i++)
 	{
@@ -486,7 +486,7 @@ long initgraf(void)
 		vro_cpyfm(vhndl, 6/*S_XOR_D*/, xy, &spritemask, &spritefdb);
 	}
 
-	Mfree(loadfdb.fd_addr);         /* Nicht mehr ben”tigten Speicher freigeben */
+	Mfree(loadfdb.fd_addr);         /* Free unused memory */
 	Mfree(mbuffdb.fd_addr);
 
 	/* Bodengrafik laden und vorbereiten: */

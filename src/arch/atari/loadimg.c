@@ -80,7 +80,7 @@ void Decompress(IMGHEAD *img, char *dest)
 	i = 0;
 	z = 0;
 
-	do /* Für jede Zeile */
+	do /* Repeat for each line */
 	{
 		repetitions = 1;
 		if( source[i]==0 && source[i+1]==0 && source[i+2]==255 )
@@ -89,7 +89,7 @@ void Decompress(IMGHEAD *img, char *dest)
 			i+=4;
 		}
 
-		for( p = 0; p <= img->Planes-1; p++) /* Für jede Farbebene */
+		for( p = 0; p <= img->Planes-1; p++) /* for each plane */
 		{
 			off = (long)p * PlaneBytes + (long)z * LineB2;
 			j = 0;
@@ -269,8 +269,8 @@ int getximgpal(char *filename, short pal[][3])
  *
  *  variables
  * MFDB *image -> MFDB of the image we want to convert to the current bit depth
- * size		   -> size of buffer of the image. (could probably reconstruct, but
- *												we already have this value beforehand)
+ * size		   -> size of buffer of the image. (could probably reconstruct,
+ *		      but we already have this value beforehand)
  * planes	   -> Number of planes = current bit depth
  * img_handle  -> Our VDI_handle for vdi functions
  *

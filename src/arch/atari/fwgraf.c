@@ -322,7 +322,7 @@ void drawsprites(void)
 			}
 			rdsprflags[i+1]=1;
 		}
-		else rdsprflags[i+1]=0;   /* Wenn auÿerhalb Fenster => nicht neu zeichnen */
+		else rdsprflags[i+1]=0;   /* Out of the window => do not redraw */
 	}
 
 	/** Now draw the sprites: **/

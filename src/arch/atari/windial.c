@@ -31,7 +31,7 @@ void wdial_close(int dwhndl)
 /* ***Dialog neu zeichnen, Rechteckliste beachten*** */
 void wdial_redraw(int dwhndl, OBJECT *tree, GRECT *redrwrect)
 {
-	GRECT clip;               /* Für Rechtecksliste */
+	GRECT clip;               /* For the rectangual list */
 
 	wind_update(BEG_UPDATE);
 	graf_mouse(M_OFF, 0L);
@@ -290,7 +290,7 @@ short wdial_popup(OBJECT *ptree, short *pitem, short popupx, short popupy, void 
 		}
 
 	}
-	while(mb!=1);  /* Bis Maustaste gedrückt */
+	while(mb!=1);  /* Until the mouse button has been clicked */
 
 	newitem=objc_find(ptree, 0, 1, mx, my);
 	if(newitem>0 && (ptree[newitem].ob_flags&TOUCHEXIT) && !(ptree[newitem].ob_state&DISABLED) )

@@ -45,9 +45,9 @@
     Versionsnummer des Programms; 0x204 = v2.4 */
 #define MP_NAK 0x4801
 /* MP_START: Funktion ist identisch mit VA_START. Nach
-    Übernahme des Kommandostrings schickt Paula aber eine MP_ACK
+    Uebernahme des Kommandostrings schickt Paula aber eine MP_ACK
     (bzw. MP_NAK)-Nachricht an den Absender zurueck, und signalisiert
-    so, daÿ der in der MP_START-Nachricht angegebene Speicherbereich
+    so, dass der in der MP_START-Nachricht angegebene Speicherbereich
     anderweitig benutzt werden kann. */
 #define MP_START 0x4802
 /* MP_STOP: Stoppt Paula und gibt den fuer MODs und Playlisten
@@ -132,7 +132,7 @@ short sndsamflag=0;
 short sndmodflag=0;
 
 /* Allgemeine Variablen: */
-int samqueue[8]= {-1,-1,-1,-1,-1,-1,-1,-1}; /* Warteschleife für Samples */
+int samqueue[8]= {-1,-1,-1,-1,-1,-1,-1,-1};    /* Queue for the samples */
 int sqanz=0;
 
 int ptyp;               /* Playertyp: 0=keiner; 1=SPI; 2=TeTra; 3=Paula; 4=U-Tracker */
@@ -436,7 +436,7 @@ void sound_play(short snr)
 
 	if( sndpsgflag && samples[snr].dosnd )
 		Dosound(samples[snr].dosnd);
-	else if( samples[snr].start )        /* ungültige Samples ignorieren */
+	else if( samples[snr].start )        /* Ignore invalid samples */
 	{
 		if( ptyp==1 && playflag && tspi )
 		{
@@ -446,7 +446,7 @@ void sound_play(short snr)
 		}
 		else if( /*sndsamflag &&*/ !Buffoper(-1) && Locksnd()==1 )
 		{
-			Devconnect(0, 8, 0, 3, 1);     /* 25kHz einstellen, für 12.5kHz: 7 statt 3 */
+			Devconnect(0, 8, 0, 3, 1);     /* Set 25kHz, for 12.5kHz: use 7 instead of 3 */
 			Setmode(2);
 			Setbuffer(0, samples[snr].start, samples[snr].end);
 			Buffoper(1);                   /* Sample direkt spielen */

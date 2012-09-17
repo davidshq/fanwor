@@ -1,4 +1,4 @@
-/* *** Prototyp für <loadimg.c> *** */
+/* *** Prototypes for loadimg.c *** */
 
 #include <vdi.h>
 
