@@ -18,7 +18,7 @@ const char *groundname="../graphics/ground.png";
 /* *** Beim GUI anmelden *** */
 int initGUI(void)
 {
-	if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		fprintf(stderr, "Could not initialize the SDL library:\n %s\n", SDL_GetError() );
 		return 1;
