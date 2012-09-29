@@ -2,12 +2,13 @@
 
 #include <SDL.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "feddefs.h"
 #include "fedmain.h"
 #include "fedgraf.h"
 #include "loadpng.h"
-
+#include "sdlgui.h"
 
 
 /* **Variablen:** */
@@ -37,6 +38,9 @@ int initGUI(void)
 
 	SDL_ShowCursor(1);
 
+	SDLGui_Init();
+	SDLGui_SetScreen(sdlscrn);
+
 	return 0;
 }
 
@@ -44,6 +48,7 @@ int initGUI(void)
 /* ***Beim GUI abmelden*** */
 void exitGUI(void)
 {
+	SDLGui_UnInit();
 	SDL_Quit();
 }
 
