@@ -166,7 +166,10 @@ void drwindow()
 					rd.y=dcy*32;
 					rd.w=rd.h=32;
 					if(index<DIFSPRTNUM)
+					{
+						SDL_FillRect(sdlscrn, &rd, SDL_MapRGB(sdlscrn->format, 192, 192, 192) );
 						SDL_BlitSurface(spritegfx, &rs, sdlscrn, &rd);
+					}
 					else
 						SDL_FillRect(sdlscrn, &rd, SDL_MapRGB(sdlscrn->format, 0, 0, 0) );
 				}
