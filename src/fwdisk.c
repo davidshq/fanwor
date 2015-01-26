@@ -103,6 +103,7 @@ int loadroom(void)
 
 	if (fread(&hd, sizeof(LEVEL_HEADER), 1, fhndl) != 1)
 	{
+		fclose(fhndl);
 		errfatldlg("Could not read\nlevel file!");
 		return -1;
 	}
@@ -122,6 +123,7 @@ int loadroom(void)
 		fclose(fhndl);
 		sprintf(str, "No Fanwor|level file:|%lx", hd.hmagic);
 		errfatldlg(str);
+		return -1;
 	}
 
 	r_width=hd.r_wdth;
@@ -136,6 +138,7 @@ int loadroom(void)
 		{
 			fclose(fhndl);
 			errfatldlg("No temporary memory\navailable!");
+			return -1;
 		}
 		oldlen=len;
 	}
@@ -145,6 +148,7 @@ int loadroom(void)
 		free(buf);
 		fclose(fhndl);
 		errfatldlg("Error while reading\nlevel file!");
+		return -1;
 	}
 
 	sfbuf=buf;
