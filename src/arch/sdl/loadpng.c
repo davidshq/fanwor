@@ -218,7 +218,7 @@ SDL_Surface *LoadPNG(const char *fname)
 
 	/* Create the array of pointers to image data */
 	row_pointers = (png_bytep*) malloc(sizeof(png_bytep)*height);
-	if ( (row_pointers == NULL) ) {
+	if (row_pointers == NULL) {
 		IMG_SetError("Out of memory");
 		SDL_FreeSurface(surface);
 		surface = NULL;
