@@ -19,21 +19,11 @@
 #include "fwmain.h"
 #include "fwdata.h"
 #include "fwdisk.h"
+#include "fwreact.h"
 
 #ifdef SOZOBON
 #define USEBACKSLASH
 #endif
-
-
-/* ** Variablen: ** */
-#ifdef USEBACKSLASH
-char roompath[]=".\\rooms";
-#else
-char roompath[]="./rooms";
-#endif
-char roomname[256];
-
-extern char spec_gemz[8];
 
 
 static unsigned short swap_u16(uint16_t in)
@@ -69,9 +59,10 @@ int loadroom(void)
 	static char *buf=0L;
 	char *sfbuf, *ffbuf;
 	int dx, dy, i;
+	char roomname[256];
 
 	/* Create file name */
-	strcpy(roomname, roompath);
+	strcpy(roomname, "rooms");
 #ifdef USEBACKSLASH
 	strcat(roomname, "\\room");
 #else

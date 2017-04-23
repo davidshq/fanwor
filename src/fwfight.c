@@ -24,7 +24,7 @@
 #endif
 
 /* ***Move enemies*** */
-void setenmys()
+void setenmys(void)
 {
 	register short i;
 	register SPRT *aktsprt;

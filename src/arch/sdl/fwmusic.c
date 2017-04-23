@@ -24,9 +24,12 @@
 
 short playflag=0;
 
-Mix_Music *tmusic = NULL;
-Mix_Chunk *samples[SAM_ANZAHL];
-char *samnames[SAM_ANZAHL]= {"sword.wav", "takeitem.wav", "success.wav"};
+static Mix_Music *tmusic = NULL;
+static Mix_Chunk *samples[SAM_ANZAHL];
+static char *samnames[SAM_ANZAHL] =
+{
+	"sword.wav", "takeitem.wav", "success.wav"
+};
 
 
 

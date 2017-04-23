@@ -21,7 +21,7 @@
 
 /* ** Variables: ** */
 char spec_gemz[8];
-short spec_gemznr=0;
+static short spec_gemznr = 0;
 
 
 /* ***Check if the player entered a door*** */
@@ -136,7 +136,7 @@ void sethero(void)
 
 
 /* *** Does the player touch another sprite? *** */
-void sprtcollision()
+void sprtcollision(void)
 {
 	register unsigned short i;
 	static unsigned short regain=0;

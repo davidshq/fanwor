@@ -66,8 +66,10 @@ static void setpal(SDL_Palette *palette)
 }
 
 
-/* ***Hitpoints (und Goldstand) ausgeben*** */
-void write_hp_gold()
+/**
+ * Draw the hitpoints and amount of gold
+ */
+void write_hp_gold(void)
 {
 	SDL_Rect rs, rd;
 
@@ -83,7 +85,6 @@ void write_hp_gold()
 	SDL_BlitSurface(fontgfx, &rs, sdlscrn, &rd);
 	rd.w=32;
 	SDL_UpdateRects(sdlscrn, 1, &rd);
-
 }
 
 

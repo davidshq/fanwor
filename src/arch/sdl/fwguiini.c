@@ -26,9 +26,9 @@
 
 
 /* Variables: */
-const char *spritename="./graphics/sprites.png";
-const char *groundname="./graphics/ground.png";
-const char *fontname="./graphics/font.png";
+static const char *spritename = "./graphics/sprites.png";
+static const char *groundname = "./graphics/ground.png";
+static const char *fontname = "./graphics/font.png";
 
 
 /* *** Beim GEM anmelden + Keyboard/Joystick initialisieren *** */

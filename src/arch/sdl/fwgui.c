@@ -22,7 +22,7 @@
 
 
 /* *Variables:* */
-int gamespeed=12;
+static int gamespeed = 12;
 
 
 /* ***Wait some milliseconds*** */
@@ -76,7 +76,7 @@ static void keyklicks(void)
 
 
 /* ***Event function*** */
-void event_handler()
+void event_handler(void)
 {
 	SDL_Event event;
 
