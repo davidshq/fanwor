@@ -140,17 +140,23 @@ floppy will be very slow.
 
  b) Linux/Unix SDL version
 
-You will probably have to recompile Fanwor first for your system. You also
-must have the SDL library and the SDL-Mixer library installed on your system.
-Both can be found at:
- http://www.libsdl.org
-Since Fanwor now uses PNG images instead of BMP images, you also need the
-PNG2 library (http://www.cdrom.com/pub/png/) and the  Zlib library
-(http://www.cdrom.com/pub/infozip/zlib/)
-Then go to the src directory and type "make". Fanwor's Makefile is not very
-keen - if you have problems to compile Fanwor, you must probably edit the
-Makefile to suit your system (have especially a look the lines with
-LIBS_sdl and CFL_sdl).
+You probably might need to recompile Fanwor for your system. For doing this,
+you need to have installed a C-compiler (like GCC or clang) and some additional
+libraries with their development files first:
+
+- SDL v1.2 (http://libsdl.org/download-1.2.php)
+- SDL_mixer v1.2 (https://www.libsdl.org/projects/SDL_mixer/release-1.2.html)
+- libpng (http://www.libpng.org/pub/png/)
+- zlib (http://www.zlib.net/)
+
+All of these libraries are pretty standard nowadays, so you should also be able
+to find the corresponding packages in your distribution.
+
+Once you've got all required development libraries installed correctly, go to
+the src directory and type "make". Fanwor's Makefile is not very keen - if
+you have problems to compile Fanwor, you must probably edit the Makefile to
+suit your system (have especially a look the lines with LIBS_sdl and CFL_sdl).
+
 If you have installed the SDL, the SDL-mixer, the PNG and the ZLib library
 correctly and still don't succeed in compiling Fanwor, then please contact me!
 

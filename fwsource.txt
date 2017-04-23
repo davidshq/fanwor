@@ -1,6 +1,5 @@
 
  Fanwor - Some words on the source code
- (c) 2000 by Thomas Huth
 
 I've released the complete source code of my game Fanwor including the level
 editor Fawned under the terms of the GNU General Public License (please read
@@ -12,15 +11,15 @@ very ugly, and I certainly would not write it in the same style today.
 
 The source is also not very well documented and sometimes also only in german,
 but I hope it is basically understandable.
+
 I used SozobonX-C to compile on the Atari it, but with some minimal work, you
 should also be able to use another C compiler (Pure-C, GNU-C, ...) to compile
 it.
-For the Linux/Unix version I am using GNU-C (what else?). You also need the
-SDL Library and the SDL-Mixer Library, both can be found at:
-http://www.libsdl.org
-Since Fanwor now uses PNG instead of BMP images with the Linux version,
-you also need the PNG library (http://www.cdrom.com/pub/png/) and the
-Zlib library (http://www.cdrom.com/pub/infozip/zlib/)
+
+For the Linux/Unix version, any C compiler like GCC or clang should be usable.
+You also need to install some additional libraries with their development
+headers first before you can compile Fanwor - please see the readme.txt for
+more information.
 
 If you want to write an extension to Fanwor/Fawned, please contact me first so
 that I can sync the work on it. And please also keep to its actual source file
