@@ -42,7 +42,9 @@ void setenmys(void)
 		{
 		case 1:
 		case 2:
-			if(aktsprt->counter&1)  break;
+			if (aktsprt->counter & 1)
+				break;
+			/* fallthrough */
 		case 5:
 			switch(aktsprt->directn)
 			{
