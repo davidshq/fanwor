@@ -101,15 +101,6 @@ static bool File_IsRootFileName(const char *pszFileName)
 		return true;
 #endif
 
-#ifdef GEKKO
-	if (strlen(pszFileName) > 2 && pszFileName[2] == ':')	// sd:
-		return true;
-	if (strlen(pszFileName) > 3 && pszFileName[3] == ':')	// fat:
-		return true;
-	if (strlen(pszFileName) > 4 && pszFileName[4] == ':')	// fat3:
-		return true;
-#endif
-
 	return false;
 }
 
@@ -577,40 +568,6 @@ FILE *File_Close(FILE *fp)
 
 /*-----------------------------------------------------------------------*/
 /**
- * Check if input is available at the specified file descriptor.
- */
-bool File_InputAvailable(FILE *fp)
-{
-#if HAVE_SELECT
-	fd_set rfds;
-	struct timeval tv;
-	int fh;
-	int ret;
-
-	if (!fp || (fh = fileno(fp)) == -1)
-		return false;
-
-	/* Add the file handle to the file descriptor set */
-	FD_ZERO(&rfds);
-	FD_SET(fh, &rfds);
-
-	/* Return immediately */
-	tv.tv_sec = 0;
-	tv.tv_usec = 0;
-
-	/* Check if file descriptor is ready for a read */
-	ret = select(fh+1, &rfds, NULL, NULL, &tv);
-
-	if (ret > 0)
-		return true;    /* Data available */
-#endif
-
-	return false;
-}
-
-
-/*-----------------------------------------------------------------------*/
-/**
  * Wrapper for File_MakeAbsoluteName() which special-cases stdin/out/err
  * named files and empty file name.  The given buffer should be opened
  * with File_Open() and closed with File_Close() if this function is used!
@@ -635,11 +592,6 @@ void File_MakeAbsoluteName(char *pFileName)
 {
 	char *pTempName;
 	int inpos, outpos;
-
-#if defined (__AMIGAOS4__)
-	/* This function does not work on Amiga OS */
-	return;
-#endif
 
 	inpos = 0;
 	pTempName = malloc(FILENAME_MAX);
