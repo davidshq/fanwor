@@ -54,8 +54,8 @@ int loadroom(void)
 	LEVEL_HEADER hd;
 	LEVEL_EINTRAG eintrbuf;
 	FILE *fhndl;
-	long len;
-	static long oldlen=0;
+	size_t len;
+	static size_t oldlen = 0;
 	static char *buf=0L;
 	char *sfbuf, *ffbuf;
 	int dx, dy, i;
