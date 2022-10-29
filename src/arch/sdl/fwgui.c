@@ -29,6 +29,7 @@ static int gamespeed = 12;
 void waitms(short ms)
 {
 	SDL_Delay(ms);
+	SDL_PumpEvents();
 }
 
 
