@@ -1,5 +1,4 @@
-
- Fanwor - Some words on the source code
+# Fanwor - Some words on the source code
 
 I've released the complete source code of my game Fanwor including the level
 editor Fawned under the terms of the GNU General Public License (please read
@@ -59,7 +58,7 @@ to the corresponding *.c files. One exceptions is the fwdefs.h, which contains
 some central definitions and declarations.
 
 Some words about Fawned, the Fanwor Editor: It is in a catastrophal beta
-version state. Until now, I just was to lazy to document it or to debug it.
+version state. Until now, I was to lazy to document it or to debug it.
 Please use it very carefully.
 
-A now, have a lot of fun with the source!
+And now, have a lot of fun with the source!
