@@ -3,6 +3,8 @@
 #ifndef _FWMUSIC_H
 #define _FWMUSIC_H
 
+#include "music.h"
+
 #define S_SWORD         0
 #define S_TAKEITEM      1
 #define S_SUCCESS       2

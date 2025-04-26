@@ -1,4 +1,4 @@
-/* ******* feddisk.c: Routinen zum Laden und Speichern ******* */
+/* ******* feddisk.c: Routines for loading and saving ******* */
 
 #include <stdio.h>
 #include <unistd.h>
@@ -12,8 +12,8 @@
 
 
 
-/* **Variablen** */
-char fname[128];			/*Dateinamen */
+/* **Variables** */
+char fname[128];			/*Filename */
 
 LEVEL_HEADER hd;
 
@@ -29,7 +29,7 @@ unsigned long swap_long(unsigned long D)
 }
 
 
-/* *** Level laden *** */
+/* *** Load level *** */
 int loadlevel(char *fname)
 {
 	int fhndl;
@@ -39,7 +39,7 @@ int loadlevel(char *fname)
 	fhndl=open(fname, O_RDONLY);
 	if (fhndl<0)
 	{
-		fprintf(stderr,"Konnte Leveldatei nicht oeffnen!\n");
+		fprintf(stderr,"Could not open level file!\n");
 		return -1;
 	}
 
@@ -53,14 +53,14 @@ int loadlevel(char *fname)
 	{
 		hd.hmagic=swap_long(hd.hmagic);
 		hd.version=swap_short(hd.version);
-		hd.anz_obj=swap_short(hd.anz_obj);
+		hd.obj_count=swap_short(hd.obj_count);
 		hd.r_wdth=swap_short(hd.r_wdth);
 		hd.r_hght=swap_short(hd.r_hght);
 	}
 
 	if(hd.hmagic!=(long)0x4641574FL)
 	{
-		fprintf(stderr,"Keine Leveldatei!\n");
+		fprintf(stderr,"No level file!\n");
 		close(fhndl);
 		return -1;
 	}
@@ -71,9 +71,9 @@ int loadlevel(char *fname)
 	for(dy=0; dy<(int)r_height; dy++)
 		for(dx=0; dx<(int)r_width; dx++)
 		{
-			if( read(fhndl, &sfeld[dx][dy], sizeof(unsigned char)) != sizeof(unsigned char) )
+			if( read(fhndl, &sfield[dx][dy], sizeof(unsigned char)) != sizeof(unsigned char) )
 			{
-				fprintf(stderr,"Fehler beim Lesen der Leveldatei!\n");
+				fprintf(stderr,"Error reading level file!\n");
 				close(fhndl);
 				return -1;
 			}
@@ -81,24 +81,24 @@ int loadlevel(char *fname)
 	for(dy=0; dy<(int)r_height; dy++)
 		for(dx=0; dx<(int)r_width; dx++)
 		{
-			if( read(fhndl, &ffeld[dx][dy], sizeof(unsigned char)) != sizeof(unsigned char) )
+			if( read(fhndl, &ffield[dx][dy], sizeof(unsigned char)) != sizeof(unsigned char) )
 			{
-				fprintf(stderr,"Fehler beim Lesen der Leveldatei!\n");
+				fprintf(stderr,"Error reading level file!\n");
 				close(fhndl);
 				return -1;
 			}
 		}
 
-	en_anz=hd.anz_obj;
+	entry_count=hd.obj_count;
 
 	i=0;
-	while( i < en_anz )
+	while( i < entry_count )
 	{
-		if( read(fhndl, &en[i], sizeof(LEVEL_EINTRAG)) != sizeof(LEVEL_EINTRAG) )
+		if( read(fhndl, &entries[i], sizeof(LEVEL_ENTRY)) != sizeof(LEVEL_ENTRY) )
 		{
-			fprintf(stderr,"Fehler beim Lesen der Leveldatei!\n");
+			fprintf(stderr,"Error reading level file!\n");
 			close(fhndl);
-			en_anz=0;
+			entry_count=0;
 			return -1;
 		}
 		i+=1;
@@ -114,7 +114,7 @@ int loadlevel(char *fname)
 
 
 
-/* *** Level speichern *** */
+/* *** Save level *** */
 int savelevel(char *lname)
 {
 	int fhndl;
@@ -122,7 +122,7 @@ int savelevel(char *lname)
 
 	hd.hmagic=0x4641574FL;
 	hd.version=0x0250;  /* Version 2.50 */
-	hd.anz_obj=en_anz;
+	hd.obj_count=entry_count;
 	hd.r_wdth=r_width;
 	hd.r_hght=r_height;
 
@@ -143,7 +143,7 @@ int savelevel(char *lname)
 	for(dy=0; dy<(int)r_height; dy++)
 		for(dx=0; dx<(int)r_width; dx++)
 		{
-			if( write(fhndl, &sfeld[dx][dy], (long)sizeof(unsigned char)) != sizeof(unsigned char) )
+			if( write(fhndl, &sfield[dx][dy], (long)sizeof(unsigned char)) != sizeof(unsigned char) )
 			{
 				fprintf(stderr,"Write error!\n");
 				return -1;
@@ -152,15 +152,15 @@ int savelevel(char *lname)
 	for(dy=0; dy<(int)r_height; dy++)
 		for(dx=0; dx<(int)r_width; dx++)
 		{
-			if( write(fhndl, &ffeld[dx][dy], (long)sizeof(unsigned char)) != sizeof(unsigned char) )
+			if( write(fhndl, &ffield[dx][dy], (long)sizeof(unsigned char)) != sizeof(unsigned char) )
 			{
 				fprintf(stderr,"Write error!\n");
 				return -1;
 			}
 		}
 
-	i = sizeof(LEVEL_EINTRAG) * en_anz;
-	if (write(fhndl, en, (long)i) != i)
+	i = sizeof(LEVEL_ENTRY) * entry_count;
+	if (write(fhndl, entries, (long)i) != i)
 	{
 		fprintf(stderr, "Write error!\n");
 		return -1;

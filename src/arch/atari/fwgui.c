@@ -31,15 +31,15 @@
 /* *Variables:* */
 int ap_id;                              /* AES-Handle */
 int vhndl;                              /* VDI-Handle */
-int deskx, desky, deskw, deskh;         /* Deskto size */
-int wihndl;                             /* Fenster-Handle */
-GRECT wi;                               /* Fenster-Koordinaten */
+int deskx, desky, deskw, deskh;         /* Desktop size */
+int wihndl;                             /* Window handle */
+GRECT wi;                               /* Window coordinates */
 OBJECT *menudlg;
-int mausx, mausy, mausk, klicks;        /* Zur Mausabfrage */
-int kstate, key;                        /* Zur Tastaturabfrage */
+int mousex, mousey, mousek, clicks;        /* For mouse query */
+int kstate, key;                        /* For keyboard query */
 short mb_pressed;                       /* Has the mouse button been pressed? */
-int msgbuf[8];                          /* Der Nachrichtenbuffer */
-short wichevnt;                         /* Aufgetretene Evnt-Multi-Ereignisse */
+int msgbuf[8];                          /* The message buffer */
+short wichevnt;                         /* Occurred event multi-events */
 int deskclip[4];                        /* To clip to the desktop rectangle */
 int gamespeed=0;
 
@@ -49,7 +49,7 @@ short flag_pad=0;
 unsigned char joystate;                  /* Joystickstatus */
 
 
-/* ***Tastenbuffer loeschen*** */
+/* ***Clear key buffer*** */
 void clearkeybuf()
 {
 	static IOREC *keybufp=0L;
@@ -145,7 +145,7 @@ void reactmenu()
 		if( form_alert(2,"[2][Restart game?][Yes|No]")==1 )
 			sprites[0].hp=0;
 		break;
-	case QUITGAME:                        /* Spiel verlassen */
+	case QUITGAME:                        /* Exit Game */
 		if( form_alert(2,"[2][Quit the game?][Yes|No]")==1 )
 			flag_quit=TRUE;
 		break;
@@ -162,16 +162,16 @@ void reactmenu()
 			long save_ssp;
 			Kbrate(oldkbrate>>8, oldkbrate & 0x0FF);
 			save_ssp=(long)Super(0L);
-			*(unsigned char *)(0x484)=oldconterm;		/* Tastaturklick ein */
+			*(unsigned char *)(0x484)=oldconterm;		/* Keyboard click */
 			Super(save_ssp);
 			flag_key=0;
 		}
 		if( !flag_key && (dlgptr[CUSEKEY].ob_state&SELECTED) )
 		{
 			long save_ssp;
-			Kbrate(1, 1);					/* Tastaturwiederholung klein setzen */
+			Kbrate(1, 1);					/* Set keyboard repeat lowercase */
 			save_ssp=(long)Super(0L);
-			*(unsigned char *)(0x484)=0x0A;					/* Tastaturklick aus */
+			*(unsigned char *)(0x484)=0x0A;					/* Keyboard click off */
 			Super(save_ssp);
 		}
 		break;
@@ -181,7 +181,7 @@ void reactmenu()
 		do
 		{
 			exitbut=wdial_formdo(wdh, dlgptr, 0, wdmsgs, gamespeed, NULL) & 0x7FFF;
-			if(exitbut==SPDLARRW) /* switch() scheint hier nicht richtig zu funken? */
+			if(exitbut==SPDLARRW) /* switch() seems to be broken here? */
 			{
 				if(gamespeed>0)  --gamespeed;
 				else exitbut=0;
@@ -243,8 +243,8 @@ void reactmenu()
 
 
 
-/* ***Tastendruecke*** */
-void keyklicks(void)
+/* ***Keyboard clicks*** */
+void keyclicks(void)
 {
 	int i,d;
 	char scancode;
@@ -272,7 +272,7 @@ void keyklicks(void)
 			break;
 		case 0x19:
 			while((char)evnt_keybd()=='p');
-			break; /* Pause bis Tastendruck! */
+			break; /* Pause until keypress! */
 		case 0x10:
 			if( form_alert(2,"[2][Quit the game?][Yes|No]")==1 )
 				flag_quit=TRUE;
@@ -285,7 +285,7 @@ void keyklicks(void)
 
 
 
-/* ***Nachrichten*** */
+/* ***Messages*** */
 void mesages(void)
 {
 	int xy[8];
@@ -311,7 +311,7 @@ void mesages(void)
 	case WM_CLOSED:
 		if( form_alert(2,"[2][Quit the game?][Yes|No]")==2 )
 			break;
-	case AP_TERM:                                     /* Shutdown? */
+	case AP_TERM: /* Shutdown? */
 	case AP_RESCHG:
 		flag_quit=TRUE;
 		break;
@@ -336,15 +336,15 @@ void event_handler()
 	wichevnt=evnt_multi(MU_TIMER|MU_MESAG|MU_KEYBD|MU_BUTTON,
 	                    /*(alrdyhit?0:1)*/1, 2, 2,
 	                    0,0,0,0,0,0,0,0,0,0,
-	                    msgbuf, 0, 0, &mausx, &mausy, &mausk, &kstate, &key, &klicks);
+	                    msgbuf, 0, 0, &mousex, &mousey, &mousek, &kstate, &key, &clicks);
 
 	if(wichevnt & MU_MESAG)
 		mesages();
 
 	tdirectn=0;
 	if(wichevnt & MU_KEYBD)
-		keyklicks();
-	if(flag_pad)			/* Jaguarpad abfragen */
+		keyclicks();
+	if(flag_pad)			/* Jaguar pad query */
 		Supexec(getjoypad);
 	if( (flag_joy || flag_pad) && joystate )
 	{
@@ -368,7 +368,7 @@ void event_handler()
 		}
 		if(joystate>=128)  tdirectn|=128;
 	}
-	if( kstate || ((wichevnt&MU_BUTTON) && mausk) )
+	if( kstate || ((wichevnt&MU_BUTTON) && mousek) )
 		tdirectn|=128;
 
 	if(gamespeed)  evnt_timer(gamespeed, 0);

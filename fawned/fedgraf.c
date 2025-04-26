@@ -12,7 +12,7 @@
 #endif
 
 
-/* ***Palette setzen*** */
+/* ***Set palette*** */
 void setpal(SDL_Palette *palette)
 {
 	static SDL_Color *colors=NULL;
@@ -63,7 +63,7 @@ void drawblk(short xpos, short ypos, short num)
 }
 
 
-/* *** Teil des Offscreens neu zeichnen *** */
+/* *** Redraw part of the offscreen *** */
 void drawoffscr(short ox, short oy, short ow, short oh)
 {
 	short i, j;
@@ -72,22 +72,22 @@ void drawoffscr(short ox, short oy, short ow, short oh)
 	for(i=ox; i<ox+ow; i++)
 		for(j=oy; j<oy+oh; j++)
 		{
-			drawblk(i, j, sfeld[i][j]);
+			drawblk(i, j, sfield[i][j]);
 		}
-	for(i=0; i<en_anz; i++)
+	for(i=0; i<entry_count; i++)
 	{
-		if( (en[i].eintrtyp==1 || en[i].eintrtyp==4) && (short)en[i].xpos>=ox && (short)en[i].ypos>=oy
-		                && (short)en[i].xpos<ox+ow && (short)en[i].ypos<oy+oh )
+		if( (entries[i].entry_type==1 || entries[i].entry_type==4) && (short)entries[i].xpos>=ox && (short)entries[i].ypos>=oy
+		                && (short)entries[i].xpos<ox+ow && (short)entries[i].ypos<oy+oh )
 		{
 			rs.x=0;
 			rs.y=0;
-			for(j=0; j<en[i].art; j++)
+			for(j=0; j<entries[i].art; j++)
 				rs.y+=spritetable[j].animnr[0]+spritetable[j].animnr[1]+spritetable[j].animnr[2]+spritetable[j].animnr[3];
 			rs.y*=32;
 			rs.w=32;
 			rs.h=32;
-			rd.x=(en[i].xpos-rwx)*32;
-			rd.y=(en[i].ypos-rwy)*32;
+			rd.x=(entries[i].xpos-rwx)*32;
+			rd.y=(entries[i].ypos-rwy)*32;
 			rd.w=32;
 			rd.h=32;
 			SDL_BlitSurface(spritegfx, &rs, offscrn, &rd);
@@ -99,7 +99,7 @@ void drawoffscr(short ox, short oy, short ow, short oh)
 
 
 
-/* ***Grafik im Fenster aufbauen*** */
+/* ***Build graphics in window*** */
 void drwindow()
 {
 	int i;
@@ -107,16 +107,16 @@ void drwindow()
 
 	/* lock surface */
 
-	if(smodus==0)  /* Editiermodus */
+	if(smode==0)  /* Edit mode */
 	{
 		SDL_BlitSurface(offscrn, NULL, sdlscrn, NULL);
-		for(i=0; i<en_anz; i++)
+		for(i=0; i<entry_count; i++)
 		{
-			if( en[i].eintrtyp==2 && (short)en[i].xpos>=rwx && (short)en[i].ypos>=rwy
-			                && (short)en[i].xpos<rwx+rww && (short)en[i].ypos<rwy+rwh )
+			if( entries[i].entry_type==2 && (short)entries[i].xpos>=rwx && (short)entries[i].ypos>=rwy
+			                && (short)entries[i].xpos<rwx+rww && (short)entries[i].ypos<rwy+rwh )
 			{
-				rd.x = (en[i].xpos - rwx) * 32;
-				rd.y = (en[i].ypos - rwy) * 32;
+				rd.x = (entries[i].xpos - rwx) * 32;
+				rd.y = (entries[i].ypos - rwy) * 32;
 				rd.w = 8;
 				rd.h = 16;
 				SDL_FillRect(sdlscrn, &rd, SDL_MapRGB(sdlscrn->format, 255, 128, 255));
@@ -124,10 +124,10 @@ void drwindow()
 			}
 		}
 	}
-	else  /* Auswahlmodus */
+	else  /* Selection mode */
 	{
 		short dcx, dcy, i;
-		switch(tmodus)
+		switch(tmode)
 		{
 		case 1:
 			rs.x=0;

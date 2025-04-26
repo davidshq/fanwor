@@ -4,18 +4,18 @@
 
 #include "level.h"
 
-extern int mausx, mausy, mausk, klicks;
+extern int mousex, mousey, mousek, clicks;
 extern int kstate, key;
 extern short rwx, rwy;
 extern unsigned short rww, rwh, r_width, r_height;
 extern unsigned short newpal[256][3];
 extern int endeflag;
-extern unsigned char sfeld[128][128], ffeld[128][128];
+extern unsigned char sfield[128][128], ffield[128][128];
 extern unsigned char acttile;
-extern short smodus;
-extern short tmodus;
-extern LEVEL_EINTRAG en[];
-extern int en_anz;
+extern short smode;
+extern short tmode;
+extern LEVEL_ENTRY entries[];
+extern int entry_count;
 
 extern int difgndnum;
 

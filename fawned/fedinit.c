@@ -1,4 +1,4 @@
-/* ***** fedinit.c: (De-)Initialisation beim GEM, der Grafik, etc.***** */
+/* ***** fedinit.c: (De-)Initialization of GEM, graphics, etc. ***** */
 
 #include <SDL.h>
 #include <string.h>
@@ -11,12 +11,12 @@
 #include "sdlgui.h"
 
 
-/* **Variablen:** */
+/* **Variables:** */
 const char *spritename="../graphics/sprites.png";
 const char *groundname="../graphics/ground.png";
 
 
-/* *** Beim GUI anmelden *** */
+/* *** Login to GUI *** */
 int initGUI(void)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -45,7 +45,7 @@ int initGUI(void)
 }
 
 
-/* ***Beim GUI abmelden*** */
+/* ***Logout from GUI*** */
 void exitGUI(void)
 {
 	SDLGui_UnInit();
@@ -53,7 +53,7 @@ void exitGUI(void)
 }
 
 
-/* ***Grafik laden und vorbereiten*** */
+/* ***Load and prepare graphics*** */
 long initgraf(void)
 {
 	/* Offscreen Surface */
@@ -64,7 +64,7 @@ long initgraf(void)
 		return 3;
 	}
 
-	/* Grafik der Einheiten laden und vorbereiten: */
+	/* Load and prepare unit graphics: */
 	spritegfx=LoadPNG(spritename);
 	if( spritegfx==NULL )
 	{
@@ -76,7 +76,7 @@ long initgraf(void)
 	if ( spritegfx->format->palette )
 		SDL_SetColorKey(spritegfx, (SDL_SRCCOLORKEY|SDL_RLEACCEL), *(Uint8 *)spritegfx->pixels);
 
-	/* Bodengrafik laden und vorbereiten: */
+	/* Load and prepare ground graphics: */
 	groundgfx=LoadPNG(groundname);
 	if( groundgfx==NULL )
 	{

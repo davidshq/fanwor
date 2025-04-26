@@ -30,9 +30,9 @@ unsigned char tdirectn;            /* The direction the hero should walk to */
 short alrdyhit;                    /* Firebutton held down? */
 unsigned char room[128][128];      /* Room data */
 unsigned char ffield[128][128];    /* Room flags */
-char room_x, room_y;               /* Raumkoordinaten */
-unsigned char roomnr;              /* Gruppennummer des Raumes */
-short gold;                        /* Goldvorrat */
+char room_x, room_y;               /* Room coordinates */
+unsigned char roomnr;              /* Group number of the room */
+short gold;                        /* Gold reserve */
 
 SPRT sprites[MAXSPRTNR];           /* The sprites on the screen */
 short spritenr;                    /* The number of sprites */
@@ -102,7 +102,7 @@ static void init_vars(void)
 {
 	room_x = 7;
 	room_y = 7;
-	roomnr = 0;	/* Anfangswerte setzen */
+	roomnr = 0;	/* Set initial values */
 	sprites[0].class = 0;
 	sprites[0].index = 0;
 	sprites[0].x = sprites[0].oldx = 304;
@@ -155,7 +155,7 @@ int main(int argc, char *argv[])
 
 	do
 	{
-		showpicture("titel");
+		showpicture("title");
 
 		init_vars();
 
@@ -175,7 +175,7 @@ int main(int argc, char *argv[])
 
 			if (tdirectn > 127 && !alrdyhit)
 			{
-				sword_blow();        /* Schwerthieb */
+				sword_blow();        /* Heavy sword swing */
 				/*clearkeybuf();*/
 				alrdyhit=TRUE;
 			}
@@ -187,7 +187,7 @@ int main(int argc, char *argv[])
 			if ((sprites[0].x==0 && tdirectn==4) || (sprites[0].x==r_width*32-32 && tdirectn==2)
 			    || (sprites[0].y==0 && tdirectn==1) || (sprites[0].y==r_height*32-32 && tdirectn==3))
 			{
-				/* Raum verlassen? */
+				/* Leave room? */
 				short oldrw, oldrh;
 				oldrw=r_width;
 				oldrh=r_height;
@@ -195,7 +195,7 @@ int main(int argc, char *argv[])
 				if(sprites[0].x>=r_width*32-32)  ++room_x;
 				if(sprites[0].y<=0)  --room_y;
 				if(sprites[0].y>=r_height*32-32)  ++room_y;
-				loadroom();					/* Neuen Raum laden */
+				loadroom();					/* Load new room */
 				if(sprites[0].x<=0)
 				{
 					sprites[0].x=sprites[0].oldx=oldrw*32-34;
@@ -218,11 +218,11 @@ int main(int argc, char *argv[])
 				}
 			}
 
-			/*if(peoplenr)  testpeople();*/		/* Gib es Leute im Raum? */
+			/*if(peoplenr)  testpeople();*/		/* Is there people in the room? */
 			if(doornr)  testdoors();			/* Entered a door? */
 
 		}
-		while(sprites[0].hp>0 && !flag_quit); /* Bis keine Energie mehr bzw Happyend */
+		while(sprites[0].hp>0 && !flag_quit); /* Until no energy left or Happyend */
 
 		if(sprites[0].hp==0)                  /* Game over */
 		{

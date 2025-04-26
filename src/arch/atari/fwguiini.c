@@ -53,7 +53,7 @@ void joyrstor(void);
 /* Variables: */
 unsigned short oldkbrate;
 unsigned char oldconterm;
-unsigned short old_pal[256][3];       /* Die alte Palette */
+unsigned short old_pal[256][3];       /* The old palette */
 
 char *spritename="graphics\\sprites#.img";
 char *groundname="graphics\\ground#.img";
@@ -140,20 +140,20 @@ int appl_xgetinfo(int type, int *out1, int *out2, int *out3, int *out4)
 }
 
 
-/* *** Beim GEM anmelden + Keyboard/Joystick initialisieren *** */
+/* *** Login to GEM + Keyboard/Joystick initialize *** */
 int initGUI(void)
 {
 	int rgb[3];
-	int work_in[12], work_out[57];      /* VDI-Felder */
+	int work_in[12], work_out[57];      /* VDI-Fields */
 	int i;
 	int agi1, agi2, agi3, agi4;
 	long save_ssp;
 
 	ap_id=appl_init();
 	if(ap_id==-1) return(-1);
-	if(aesversion>=0x400)              /* Wenn moeglich einen Namen anmelden */
+	if(aesversion>=0x400)              /* If possible, register a name */
 		menu_register(ap_id, "  Fanwor\0\0\0");
-	graf_mouse(ARROW, 0L);             /* Maus als Pfeil */
+	graf_mouse(ARROW, 0L);             /* Mouse as arrow */
 
 	if( !rsrc_load("fanwor.rsc") )
 	{
@@ -161,18 +161,18 @@ int initGUI(void)
 		appl_exit();
 		return(-1);
 	}
-	rsrc_gaddr(R_TREE, FWMENU, &menudlg);  /* Adresse holen */
+	rsrc_gaddr(R_TREE, FWMENU, &menudlg);  /* Get address */
 
-	wind_get(0, WF_WORKXYWH, &deskx, &desky, &deskw, &deskh); /* Desktopgroesse */
+	wind_get(0, WF_WORKXYWH, &deskx, &desky, &deskw, &deskh); /* Desktop size */
 
 
-	/* VDI initialisieren: */
+	/* Initialize VDI: */
 	vhndl=graf_handle(&i, &i, &i, &i);
 	for(i=0; i<10; i++) work_in[i]=1;
 	work_in[10]=2;
-	v_opnvwk(work_in, &vhndl, work_out);  /* VDI-Station oeffnen */
+	v_opnvwk(work_in, &vhndl, work_out);  /* Open VDI station */
 
-	for(i=0; i<work_out[13]; i++)    /* Alte Farben sichern */
+	for(i=0; i<work_out[13]; i++)    /* Save old colors */
 	{
 		vq_color(vhndl, i, 1, rgb);
 		old_pal[i][0]=rgb[0];
@@ -181,7 +181,7 @@ int initGUI(void)
 	}
 
 	vq_extnd(vhndl, 1, work_out);
-	bipp=work_out[4];                  /* Bits pro Bitplane ermitteln */
+	bipp=work_out[4];                  /* Get bits per bitplane */
 
 	deskclip[0]=deskx;
 	deskclip[1]=desky;
@@ -199,11 +199,11 @@ int initGUI(void)
 
 #ifdef ATARIGEM
 	/* Initialize the keyboard and the joystick: */
-	joyinit();									/* Joystickroutine installiern */
-	oldkbrate=Kbrate(1, 1);					/* Tastaturwiederholung klein setzen */
+	joyinit();									/* Install joystick routine */
+	oldkbrate=Kbrate(1, 1);					/* Set keyboard repeat rate */
 	save_ssp=(long)Super(0L);
 	oldconterm=*(unsigned char *)(0x484);
-	*(unsigned char *)(0x484)=0x0A;					/* Tastaturklick aus */
+	*(unsigned char *)(0x484)=0x0A;					/* Disable keyboard click */
 	Super(save_ssp);
 #endif
 
@@ -211,7 +211,7 @@ int initGUI(void)
 }
 
 
-/* ***Beim GEM abmelden*** */
+/* ***Logout from GEM*** */
 void exitGUI(void)
 {
 	long save_ssp;
@@ -219,7 +219,7 @@ void exitGUI(void)
 #ifdef ATARIGEM
 	Kbrate(oldkbrate>>8, oldkbrate & 0x0FF);
 	save_ssp=(long)Super(0L);
-	*(unsigned char *)(0x484)=oldconterm;				/* Tastaturklick ein */
+	*(unsigned char *)(0x484)=oldconterm;				/* Enable keyboard click */
 	Super(save_ssp);
 	joyrstor();
 #endif
@@ -233,7 +233,7 @@ void exitGUI(void)
 
 
 
-/* ***Fenster oeffnen*** */
+/* ***Open window*** */
 int open_window(void)
 {
 	int x,y,w,h;
@@ -278,7 +278,7 @@ void close_window(void)
 
 
 
-/* ***Normale Grafik laden und ins aktuelle Format wandeln*** */
+/* ***Load normal graphic and convert to current format*** */
 int loadpic(char *pname, MFDB *destfdb, short newmem)
 {
 	MFDB loadfdb;
@@ -307,13 +307,13 @@ int loadpic(char *pname, MFDB *destfdb, short newmem)
 			destfdb->fd_addr=(void *)Malloc(psize);
 		if( ((signed long)destfdb->fd_addr)<=0L )  return(-1);
 	}
-	vr_trnfm(vhndl, &loadfdb, destfdb);   /* Ins aktuelle Format wandeln */
+	vr_trnfm(vhndl, &loadfdb, destfdb);   /* Convert to current format */
 	Mfree(loadfdb.fd_addr);
 
 	return(0);
 }
 
-/* ***Normale Grafik laden und in Truecolor Grafik wandeln*** */
+/* ***Load normal graphic and convert to Truecolor graphic*** */
 int loadpic2true(char *pname, MFDB *destfdb, short newmem)
 {
 	MFDB loadfdb;
@@ -346,7 +346,7 @@ int loadpic2true(char *pname, MFDB *destfdb, short newmem)
 }
 
 
-/* ***Grafik laden und vorbereiten*** */
+/* ***Load graphic and prepare*** */
 long initgraf(void)
 {
 	MFDB loadfdb, mbuffdb;
@@ -358,7 +358,7 @@ long initgraf(void)
 	int xy[8];
 
 
-	/* Offscreen vorbereiten: */
+	/* Prepare offscreen: */
 	/* wind_calc(WC_WORK, WINDOWGADGETS, deskx, desky, deskw, deskh,
 	         &xy[0], &xy[1], &xy[2], &xy[3]);*/
 	xy[2]=rww*32;
@@ -379,7 +379,7 @@ long initgraf(void)
 	offscr.fd_stand=0;
 	offscr.fd_nplanes=bipp;
 
-	/* Grafik der Einheiten laden und vorbereiten: */
+	/* Load and prepare unit graphics: */
 	if(bipp<=8)
 	{
 		for(i=0; i<strlen(spritename); i++)
@@ -442,7 +442,7 @@ long initgraf(void)
 			form_alert(1, "[3][Could not transform|sprites to truecolor][Ok]");
 	}
 
-	/* Masken erstellen: */
+	/* Create masks: */
 	mbuffdb.fd_addr=(void *)Mxalloc(picsize2, 2);
 	if( ((signed long)mbuffdb.fd_addr)==-32L )
 		mbuffdb.fd_addr=(void *)Malloc(picsize2);
@@ -472,7 +472,7 @@ long initgraf(void)
 	xy[0]=xy[1]=xy[4]=xy[5]=0;
 	xy[2]=xy[6]=31;
 	xy[3]=xy[7]=mbuffdb.fd_h-1;
-	if(bipp<=8)  vro_cpyfm(vhndl, 10, xy, &mbuffdb, &mbuffdb);  /* Invertieren */
+	if(bipp<=8)  vro_cpyfm(vhndl, 10, xy, &mbuffdb, &mbuffdb);  /* Invert */
 	mbuffdb.fd_stand=1;
 	if(bipp<=8)
 		vr_trnfm(vhndl, &mbuffdb, &spritemask);
@@ -489,7 +489,7 @@ long initgraf(void)
 	Mfree(loadfdb.fd_addr);         /* Free unused memory */
 	Mfree(mbuffdb.fd_addr);
 
-	/* Bodengrafik laden und vorbereiten: */
+	/* Load and prepare ground graphic: */
 	if(bipp<=8)
 	{
 		for(i=0; i<strlen(groundname); i++)

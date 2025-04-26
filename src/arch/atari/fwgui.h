@@ -20,7 +20,7 @@ extern int deskx, desky, deskw, deskh;
 extern int wihndl;
 extern GRECT wi;
 extern OBJECT *menudlg;
-extern int mausx, mausy, mausk, klicks;
+extern int mousex, mousey, mousek, clicks;
 extern int kstate, key;
 extern short mb_pressed;
 extern int msgbuf[8];

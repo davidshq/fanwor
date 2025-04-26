@@ -37,7 +37,7 @@ short hw2vdic8[256]= {
 short hw2vdic4[16]= { 0,2,3,6,4,7,5,8,9,10,11,14,12,15,13,1 };
 short hw2vdic2[4]= { 0,2,3,1 };
 
-/* Der Kopf einer IMG-Datei: */
+/* The header of an IMG file: */
 typedef struct
 {
 	short Version;
@@ -50,7 +50,7 @@ typedef struct
 	short Lines;
 } IMGHEAD;
 
-/* Der Kopf einer XIMG-Datei: */
+/* The header of an XIMG file: */
 typedef struct
 {
 	short Version;
@@ -66,7 +66,7 @@ typedef struct
 } XIMGHEAD;
 
 
-/* *** IMG entpacken *** */
+/* *** Decompress IMG *** */
 void Decompress(IMGHEAD *img, char *dest)
 {
 	short repetitions, count, k, l, p, z, LineBytes, LineB2;
@@ -119,7 +119,7 @@ void Decompress(IMGHEAD *img, char *dest)
 						++i;
 					}
 				}
-				else if( source[i] < 128 ) /* Solid Run mit 0 */
+				else if( source[i] < 128 ) /* Solid Run with 0 */
 				{
 					count = source[i] % 128;
 					++i;
@@ -129,7 +129,7 @@ void Decompress(IMGHEAD *img, char *dest)
 						++j;
 					}
 				}
-				else /* Solid Run mit 1 */
+				else /* Solid Run with 1 */
 				{
 					count = source[i] % 128;
 					++i;
@@ -141,7 +141,7 @@ void Decompress(IMGHEAD *img, char *dest)
 				}
 			}
 			while( j < LineBytes);
-		} /* Farbebene */
+		} /* Color plane */
 
 		++z;
 
@@ -162,7 +162,7 @@ void Decompress(IMGHEAD *img, char *dest)
 }
 
 
-/* *** Die Laderoutine *** */
+/* *** The loader routine *** */
 long LoadImg(char *Filename, MFDB *raster)
 {
 	IMGHEAD *img;
@@ -180,7 +180,7 @@ long LoadImg(char *Filename, MFDB *raster)
 		Fclose(fhndl);
 		return(img);
 	}
-	Fread(fhndl, Length, img);		/* IMG einlesen */
+	Fread(fhndl, Length, img);		/* Read IMG */
 	Fclose(fhndl);
 
 	raster->fd_w = img->LineWidth;
@@ -202,7 +202,7 @@ long LoadImg(char *Filename, MFDB *raster)
 }
 
 
-/* *** Palette aus XIMG auslesen *** */
+/* *** Read palette from XIMG *** */
 int getximgpal(char *filename, short pal[][3])
 {
 	XIMGHEAD ximg;
@@ -211,7 +211,7 @@ int getximgpal(char *filename, short pal[][3])
 
 	fhndl=Fopen(filename, 0);
 	if(fhndl<0) return(fhndl);
-	Fread(fhndl, sizeof(XIMGHEAD), &ximg);		/* IMG einlesen */
+	Fread(fhndl, sizeof(XIMGHEAD), &ximg);		/* Read IMG */
 
 	if(ximg.palmagic!='XIMG' || ximg.color_model!=0)
 	{

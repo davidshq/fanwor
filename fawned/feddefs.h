@@ -1,4 +1,4 @@
-/* ******feddefs.h - Allgemeingueltige Definitionen****** */
+/* ******feddefs.h - General Definitions****** */
 
 #ifndef FEDDEFS_H
 #define FEDDEFS_H

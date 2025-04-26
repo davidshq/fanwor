@@ -18,9 +18,9 @@
 #include "fwguiini.h"  /* For xgetcookie() */
 
 
-/* ########### MOD Definitionen und Strukturen ############ */
+/* ########### MOD Definitions and Structures ############ */
 
-/* **Die defines von TeTra/Tetrax:** */
+/* **The defines of TeTra/Tetrax:** */
 #define MOD_OK       0x4D00
 /* MOD_NAK: Not okay, the command was understood but rejected. */
 #define MOD_NAK      0x4D01
@@ -35,31 +35,29 @@
 /* MOD_CLEAR: Stop module and clear the buffer. */
 #define MOD_CLEAR    0x4D05
 
-/* **Die defines von Paula (mind. V2.4!)** */
-/* MP_ACK: Paula sagt OK! Das vorige Kommando ist verstanden
-    worden. msg[7] enthaelt die Versionsnummer des Programms; 0x204 =
+/* **The defines of Paula (mind. V2.4!)** */
+/* MP_ACK: Paula says OK! The previous command is understood
+    been. msg[7] contains the version number of the program; 0x204 =
     v2.4 */
 #define MP_ACK 0x4800
-/* MP_NAK: Paula sagt NICHT OK! Das vorige Kommando ist
-    nicht verstanden bzw. abgelehnt worden. msg[7] enthaelt die
-    Versionsnummer des Programms; 0x204 = v2.4 */
+/* MP_NAK: Paula says NOT OK! The previous command is
+    not understood or rejected. msg[7] contains the
+    version number of the program; 0x204 = v2.4 */
 #define MP_NAK 0x4801
-/* MP_START: Funktion ist identisch mit VA_START. Nach
-    Uebernahme des Kommandostrings schickt Paula aber eine MP_ACK
-    (bzw. MP_NAK)-Nachricht an den Absender zurueck, und signalisiert
-    so, dass der in der MP_START-Nachricht angegebene Speicherbereich
-    anderweitig benutzt werden kann. */
+/* MP_START: The function is identical to VA_START. After
+    taking over the command string, Paula sends back a MP_ACK
+    (or MP_NAK) message to the sender, and signals that the memory
+    area specified in the MP_START message can be used elsewhere. */
 #define MP_START 0x4802
-/* MP_STOP: Stoppt Paula und gibt den fuer MODs und Playlisten
-    allozierten Speicher frei. Das Fenster bleibt offen. Paula
-    schickt MP_ACK zurueck. */
+/* MP_STOP: Stops Paula and frees the memory allocated for MODs and
+    Playlists. The window remains open. Paula sends back a MP_ACK. */
 #define MP_STOP 0x4803
-/* MP_SHUTDOWN: Stoppt und beendet Paula. Im Accessory-
-    Modus wird nur der Speicher freigegeben und das Fenster
-    geschlossen. Paula schickt MP_ACK zurueck. */
+/* MP_SHUTDOWN: Stops and ends Paula. In the Accessory-
+    mode only the memory freed and the window closed.
+    Paula sends back a MP_ACK. */
 #define MP_SHUTDOWN 0x4804
 
-/* **Die defines von Ultimate-Tracker:** */
+/* **The defines of Ultimate-Tracker:** */
 #define  T_LOAD      900
 #define  T_PLAY      901
 #define  T_PAUSE     904
@@ -67,11 +65,11 @@
 #define  ID_TRACK    999
 
 
-/* *** SPI Interface Strukturen *** */
+/* *** SPI Interface Structures *** */
 typedef struct
 {
 	long magic;
-	short mainvers;        /* SPI Definitionsversion */
+	short mainvers;        /* SPI Defines version */
 	short spivers;         /* Version of the SPI - quite unimportant! */
 	void *tbp;				/* Pointer to the basepage of the player */
 	unsigned long support;	/* Bitfield of supported calls/modes */
@@ -111,7 +109,7 @@ typedef struct
 
 
 
-/* ############## Variablen ############ */
+/* ############## Variables ############ */
 
 /* PSG sounds, ready for Dosound() */
 unsigned char swordsnd[]=
@@ -126,18 +124,18 @@ unsigned char takeitemsnd[]=
 };
 
 
-/* Flags zum Abspielmodus: */
+/* Flags for playback mode: */
 short sndpsgflag=1;
 short sndsamflag=0;
 short sndmodflag=0;
 
-/* Allgemeine Variablen: */
+/* General variables: */
 int samqueue[8]= {-1,-1,-1,-1,-1,-1,-1,-1};    /* Queue for the samples */
 int sqanz=0;
 
-int ptyp;               /* Playertyp: 0=keiner; 1=SPI; 2=TeTra; 3=Paula; 4=U-Tracker */
-int pl_id;              /* AES-Id des Players */
-int wmsgbf[8];          /* Nachrichtenbuffer zum Verschicken */
+int ptyp;               /* Player type: 0=none; 1=SPI; 2=TeTra; 3=Paula; 4=U-Tracker */
+int pl_id;              /* AES-Id of the player */
+int wmsgbf[8];          /* Message buffer for sending */
 
 SPI *tspi;
 short playflag=FALSE;
@@ -149,9 +147,9 @@ short aktchan=0;
 typedef struct
 {
 	char *name;
-	void *start;           /* Anfangsadresse */
-	void *end;             /* Endadresse */
-	void *dosnd;           /* Alternativer DoSound */
+	void *start;           /* Start address */
+	void *end;             /* End address */
+	void *dosnd;           /* Alternative DoSound */
 } THSAMPLE;
 
 THSAMPLE samples[SAM_ANZAHL]=
@@ -162,10 +160,10 @@ THSAMPLE samples[SAM_ANZAHL]=
 };
 
 
-/* ############# Funktionen ############### */
+/* ############# Functions ############### */
 
 
-/* ***MOD-Player initialisieren*** */
+/* ***MOD-Player initialize*** */
 int mod_init(void)
 {
 	short sfh;
@@ -249,7 +247,7 @@ int mod_init(void)
 	return(-1);
 }
 
-/* ***Auf das Okay des Players warten*** */
+/* ***Wait for the player to say OK*** */
 int wait4plok()
 {
 	int i, mok, mnak;
@@ -278,7 +276,7 @@ int wait4plok()
 }
 
 
-/* ***MOD spielen*** */
+/* ***MOD play*** */
 int mod_play(const char *mname)
 {
 	int i;
@@ -308,7 +306,7 @@ int mod_play(const char *mname)
 			if(fhndl<0) return(fhndl);
 			flength=Fseek(0L, fhndl, 2);     /* Get file size */
 			Fseek(0L, fhndl, 0);
-			mod_addr=(char *)Mxalloc(flength, 0);  /* Speicher reservieren */
+			mod_addr=(char *)Mxalloc(flength, 0);  /* Reserve memory */
 			if( ((signed long)mod_addr)==-32L )  mod_addr=(char *)Malloc(flength);
 			if( ((signed long)mod_addr)<=0L )  return(mod_addr);
 			Fread(fhndl, flength, mod_addr);
@@ -348,7 +346,7 @@ int mod_play(const char *mname)
 	return(0);
 }
 
-/* ***MOD-Wiedergabe beenden*** */
+/* ***MOD playback stop*** */
 int mod_stop()
 {
 	wmsgbf[1]=ap_id;
@@ -393,7 +391,7 @@ int mod_stop()
 
 
 
-/* ***Samplesounds laden:*** */
+/* ***Load sample sounds:*** */
 long sound_init(void)
 {
 	long flength;
@@ -410,7 +408,7 @@ long sound_init(void)
 		flength=Fseek(0L, fhndl, 2);     /* Get file size */
 		Fseek(0L, fhndl, 0);
 
-		samadr=(char *)Mxalloc(flength, 0);  /* Speicher reservieren */
+		samadr=(char *)Mxalloc(flength, 0);  /* Reserve memory */
 		if( ((signed long)samadr)==-32L )  samadr=(char *)Malloc(flength);
 		if( ((signed long)samadr)<=0L )  return(samadr);
 		Fread(fhndl, flength, samadr);
@@ -429,7 +427,7 @@ void sound_deinit(void)
 }
 
 
-/* ***Neues Sample in Abspielliste aufnehmen oder direkt spielen*** */
+/* ***Add a new sample to the playback list or play it directly*** */
 void sound_play(short snr)
 {
 	int i=0;
@@ -449,7 +447,7 @@ void sound_play(short snr)
 			Devconnect(0, 8, 0, 3, 1);     /* Set 25kHz, for 12.5kHz: use 7 instead of 3 */
 			Setmode(2);
 			Setbuffer(0, samples[snr].start, samples[snr].end);
-			Buffoper(1);                   /* Sample direkt spielen */
+			Buffoper(1);                   /* Play sample directly */
 			Unlocksnd();
 		}
 	}

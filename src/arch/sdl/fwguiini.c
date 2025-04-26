@@ -31,7 +31,7 @@ static const char *groundname = "./graphics/ground.png";
 static const char *fontname = "./graphics/font.png";
 
 
-/* *** Beim GEM anmelden + Keyboard/Joystick initialisieren *** */
+/* *** Login to GEM + Keyboard/Joystick initialize *** */
 int initGUI(void)
 {
 	int i, videoflags;
@@ -72,7 +72,7 @@ int initGUI(void)
 }
 
 
-/* ***Beim der SDL abmelden*** */
+/* ***Logout from SDL*** */
 void exitGUI(void)
 {
 	SDL_Quit();
@@ -94,7 +94,7 @@ void close_window(void)
 
 
 
-/* ***Grafik laden und vorbereiten*** */
+/* ***Load and prepare graphics*** */
 long initgraf(void)
 {
 	/* Offscreen Surface */
@@ -105,7 +105,7 @@ long initgraf(void)
 		return 3;
 	}
 
-	/* Grafik der Einheiten laden und vorbereiten: */
+	/* Load and prepare unit graphics: */
 	spritegfx=LoadPNG(spritename);
 	if( spritegfx==NULL )
 	{
@@ -117,7 +117,7 @@ long initgraf(void)
 	if ( spritegfx->format->palette )
 		SDL_SetColorKey(spritegfx, (SDL_SRCCOLORKEY|SDL_RLEACCEL), *(Uint8 *)spritegfx->pixels);
 
-	/* Bodengrafik laden und vorbereiten: */
+	/* Load and prepare ground graphics: */
 	groundgfx=LoadPNG(groundname);
 	if( groundgfx==NULL )
 	{

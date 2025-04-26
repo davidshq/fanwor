@@ -33,7 +33,7 @@ static char *samnames[SAM_ANZAHL] =
 
 
 
-/* ############# Funktionen ############### */
+/* ############# Functions ############### */
 
 
 /* ***Init the MOD player (not needed for the SDL Mixer)*** */

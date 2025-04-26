@@ -1,4 +1,4 @@
- /*  Resource C-Header-File v1.9 für ResourceMaster ab v2.06 by ARDISOFT  */
+ /*  Resource C-Header-File v1.9 for ResourceMaster v2.06 by ARDISOFT  */
 
 #define FWMENU 0  /* menu */
 #define ABOUTIT 8  /* STRING in tree FWMENU */

@@ -4,31 +4,31 @@
 #include <aes.h>
 #include <stdlib.h>
 
-/* ***Fenster anmelden + Dialog zeichnen*** */
+/* ***Login to GUI + Draw dialog*** */
 int wdial_init(OBJECT *tree, char *title)
 {
 	short wx, wy, ww, wh;
 	int dwhndl;
 
-	form_center(tree, &wx, &wy, &ww, &wh);           /* Groesse holen */
+	form_center(tree, &wx, &wy, &ww, &wh);           /* Get size */
 	wind_calc(WC_BORDER, NAME|MOVER, wx, wy, ww, wh, &wx, &wy, &ww, &wh);
-	dwhndl=wind_create(NAME|MOVER, wx, wy, ww, wh);  /* Fenster anmelden */
+	dwhndl=wind_create(NAME|MOVER, wx, wy, ww, wh);  /* Create window */
 	if(dwhndl<0)  return(NULL);
-	wind_set(dwhndl, WF_NAME, title);                /* Name setzen */
-	wind_open(dwhndl, wx, wy, ww, wh);               /* Fenster oeffnen */
-	objc_draw(tree, ROOT, MAX_DEPTH, wx, wy, ww, wh);  /* Dialog zeichnen */
+	wind_set(dwhndl, WF_NAME, title);                /* Set name */
+	wind_open(dwhndl, wx, wy, ww, wh);               /* Open window */
+	objc_draw(tree, ROOT, MAX_DEPTH, wx, wy, ww, wh);  /* Draw dialog */
 
 	return(dwhndl);
 }
 
-/* ***Fenster schliessen + loeschen*** */
+/* ***Close window + delete*** */
 void wdial_close(int dwhndl)
 {
-	wind_close(dwhndl);                       /* Fenster schliessen */
-	wind_delete(dwhndl);                      /* Fenster abmelden */
+	wind_close(dwhndl);                       /* Close window */
+	wind_delete(dwhndl);                      /* Delete window */
 }
 
-/* ***Dialog neu zeichnen, Rechteckliste beachten*** */
+/* ***Redraw dialog, consider rectangle list*** */
 void wdial_redraw(int dwhndl, OBJECT *tree, GRECT *redrwrect)
 {
 	GRECT clip;               /* For the rectangual list */
@@ -123,7 +123,7 @@ short wdial_formdo(int dwhndl, OBJECT *tree, short strt_fld, void (*msghndlr)(in
 	int  idx;
 	short kshift, kcode;
 	int  mx, my, mb, br;
-	int  obx, oby, obw, obh;           /* Koordinaten des Dialogs */
+	int  obx, oby, obw, obh;           /* Dialog coordinates */
 	int msgbuf[8];
 
 	if(msec>=0)  events|=MU_TIMER;
@@ -204,7 +204,7 @@ short wdial_formdo(int dwhndl, OBJECT *tree, short strt_fld, void (*msghndlr)(in
 
 
 #if 0
-/* ***PopUp darstellen*** */
+/* ***Display PopUp*** */
 short wdial_popup(OBJECT *ptree, short *pitem, short popupx, short popupy, void (*msghndlr)(int msgbf[]), unsigned long msec, void (*tmrhndlr)())
 {
 	int mpopupret, pwhndl;
@@ -214,7 +214,7 @@ short wdial_popup(OBJECT *ptree, short *pitem, short popupx, short popupy, void 
 	int which;
 	int mx, my, mb, br;
 
-	wind_get(0, WF_WORKXYWH, &dx, &dy, &dw, &dh); /* Desktopgroesse */
+	wind_get(0, WF_WORKXYWH, &dx, &dy, &dw, &dh); /* Desktop size */
 
 	if(popupx+ptree->ob_width > dx+dw)
 		popupx=dx+dw-ptree->ob_width;
@@ -228,13 +228,13 @@ short wdial_popup(OBJECT *ptree, short *pitem, short popupx, short popupy, void 
 
 	wind_calc(WC_BORDER, 0, ptree->ob_x, ptree->ob_y,
 	          ptree->ob_width, ptree->ob_height, &dx, &dy, &dw, &dh);
-	pwhndl=wind_create(0, dx, dy, dw, dh);  /* Fenster anmelden */
+	pwhndl=wind_create(0, dx, dy, dw, dh);  /* Create window */
 	if(pwhndl<0)  return(FALSE);
-	wind_open(pwhndl, dx, dy, dw, dh);               /* Fenster oeffnen */
-	/*objc_draw(ptree, 0, 1, dx, dy, dw, dh); ->Durch WM_REDRAW zeichnen lassen*/
+	wind_open(pwhndl, dx, dy, dw, dh);               /* Open window */
+	/*objc_draw(ptree, 0, 1, dx, dy, dw, dh); ->Draw through WM_REDRAW*/
 
 	do graf_mkstate(&mx, &my, &mb, &dx);
-	while(mb);  /* Maustasten vorher loslassen */
+	while(mb);  /* Release mouse buttons */
 
 	do
 	{
@@ -305,7 +305,7 @@ short wdial_popup(OBJECT *ptree, short *pitem, short popupx, short popupy, void 
 	if(olditem>0) ptree[olditem].ob_state&=~SELECTED;
 
 	wind_close(pwhndl);
-	wind_delete(pwhndl);        /* Fenster schliessen */
+	wind_delete(pwhndl);        /* Close window */
 
 	return(mpopupret);
 }
@@ -313,7 +313,7 @@ short wdial_popup(OBJECT *ptree, short *pitem, short popupx, short popupy, void 
 
 
 #if 0
-/* ***PopUp-Knopf behandeln*** */
+/* ***Handle PopUp button*** */
 int wdial_popupbutn(OBJECT *buttree, int butnr, OBJECT *ptree, int *pitem)
 {
 	int oldchoice=*pitem;

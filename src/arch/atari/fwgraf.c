@@ -210,10 +210,10 @@ void clearsprite(short nr)
 		vro_cpyfm(vhndl, 3, dxy, &groundfdb, &offscr);
 	}
 
-	/** Jetzt ins Fenster kopieren: **/
+	/** Now copy to the window: **/
 	if(rwflag)
 	{
-		graf_mkstate(&maus_x, &maus_y, dxy, dxy); /* Aktuelle Mauspos. holen */
+		graf_mkstate(&maus_x, &maus_y, dxy, dxy); /* Get current mouse position */
 		wind_update(BEG_UPDATE);
 		wind_get(wihndl, WF_FIRSTXYWH, &oclip.g_x, &oclip.g_y, &oclip.g_w, &oclip.g_h);
 		while(oclip.g_w!=0 && oclip.g_h!=0)
@@ -238,13 +238,13 @@ void clearsprite(short nr)
 				dxy[7]=dxy[5]+clip.g_h-1;
 				if(maus_x+16>dxy[4] && maus_x-8<dxy[6] && maus_y+16>dxy[5] && maus_y-8<dxy[7])
 				{
-					mausflag=TRUE;        /* Maus loeschen */
+					mausflag=TRUE;        /* Delete mouse */
 					graf_mouse(M_OFF, 0L);
 				}
-				vro_cpyfm(vhndl, 3, dxy, &offscr, &scrnmfdb); /* Ins Fenster kopieren */
+				vro_cpyfm(vhndl, 3, dxy, &offscr, &scrnmfdb); /* Copy to the window */
 				if(mausflag)
 				{
-					mausflag=FALSE;        /* Maus wieder an */
+					mausflag=FALSE;        /* Mouse on */
 					graf_mouse(M_ON, 0L);
 				}
 			}
@@ -266,7 +266,7 @@ void drawsprites(void)
 	register SPRT *aktsprt;
 	int mausflag=FALSE;
 	short maus_x, maus_y;
-	char rdsprflags[257]; /* 0=Sprite muss nicht neu gezeichnet werden, 1=Sprite neu zeichnen */
+	char rdsprflags[257]; /* 0=Sprite does not need to be redrawn, 1=Sprite needs to be redrawn */
 
 	rwxkoor=rwx<<5;
 	rwykoor=rwy<<5;
@@ -340,12 +340,12 @@ void drawsprites(void)
 			if(dxy[4]<0 || dxy[5]<0 || dxy[6]>=(int)(rww<<5) || dxy[7]>=(int)(rwh<<5))
 				continue;
 			vro_cpyfm(vhndl, 1, dxy, &spritemask, &offscr);
-			vro_cpyfm(vhndl, 7, dxy, &spritefdb, &offscr);   /* Sprite zeichnen */
+			vro_cpyfm(vhndl, 7, dxy, &spritefdb, &offscr);   /* Draw sprite */
 		}
 	}
 
-	/** Jetzt ins Fenster kopieren: **/
-	graf_mkstate(&maus_x, &maus_y, dxy, dxy); /* Aktuelle Mauspos. holen */
+	/** Now copy to the window: **/
+	graf_mkstate(&maus_x, &maus_y, dxy, dxy); /* Get current mouse position */
 	wind_update(BEG_UPDATE);
 	wind_get(wihndl, WF_FIRSTXYWH, &oclip.g_x, &oclip.g_y, &oclip.g_w, &oclip.g_h);
 	while(oclip.g_w!=0 && oclip.g_h!=0)
@@ -354,7 +354,7 @@ void drawsprites(void)
 		{
 			aktsprt=&sprites[i];
 			if(!rdsprflags[i+1])
-				continue; /* Nur wenn noetig: Spart einiges an CPU-Zeit */
+				continue; /* Only if needed: Saves CPU time */
 			clip.g_x=oclip.g_x;
 			clip.g_y=oclip.g_y;
 			clip.g_w=oclip.g_w;
@@ -375,14 +375,14 @@ void drawsprites(void)
 				dxy[7]=dxy[5]+clip.g_h-1;
 				if(maus_x+16>dxy[4] && maus_x-8<dxy[6] && maus_y+16>dxy[5] && maus_y-8<dxy[7])
 				{
-					mausflag=TRUE;        /* Maus loeschen */
+					mausflag=TRUE;        /* Delete mouse */
 					graf_mouse(M_OFF, 0L);
 				}
-				vro_cpyfm(vhndl, 3, dxy, &offscr, &scrnmfdb); /* Ins Fenster kopieren */
-				/*v_pline(vhndl, 2, &dxy[4]);*/ /*Zum Debuggen: Bereich markieren */
+				vro_cpyfm(vhndl, 3, dxy, &offscr, &scrnmfdb); /* Copy to the window */
+				/*v_pline(vhndl, 2, &dxy[4]);*/ /* For debugging: Mark area */
 				if(mausflag)
 				{
-					mausflag=FALSE;        /* Maus wieder an */
+					mausflag=FALSE;        /* Mouse on */
 					graf_mouse(M_ON, 0L);
 				}
 			}
@@ -431,14 +431,14 @@ int showpicture(char *name)
 	do
 	{
 		wichevnt=evnt_multi(MU_TIMER|MU_KEYBD, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,
-		                    msgbuf, 800, 0, &mausx, &mausy, &mausk, &kstate, &key, &klicks);
+		                    msgbuf, 800, 0, &mousex, &mousey, &mousek, &kstate, &key, &clicks);
 	}
 	while(!(wichevnt&MU_TIMER));
 
 	do
 	{
 		wichevnt=evnt_multi(MU_MESAG|MU_KEYBD, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,
-		                    msgbuf, 0, 0, &mausx, &mausy, &mausk, &kstate, &key, &klicks);
+		                    msgbuf, 0, 0, &mousex, &mousey, &mousek, &kstate, &key, &clicks);
 
 		if(wichevnt & MU_MESAG)
 			mesages();
@@ -449,7 +449,7 @@ int showpicture(char *name)
 	do
 	{
 		wichevnt=evnt_multi(MU_TIMER|MU_KEYBD, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,
-		                    msgbuf, 400, 0, &mausx, &mausy, &mausk, &kstate, &key, &klicks);
+		                    msgbuf, 400, 0, &mousex, &mousey, &mousek, &kstate, &key, &clicks);
 	}
 	while(!(wichevnt&MU_TIMER));
 

@@ -61,7 +61,7 @@ void errfatldlg(char *errstr)
 /**
  * Called when a key has been pressed
  */
-static void keyklicks(void)
+static void keyclicks(void)
 {
 	Uint8 *keys;
 
@@ -86,11 +86,11 @@ void event_handler(void)
 		switch (event.type)
 		{
 		case SDL_KEYDOWN:
-			keyklicks();
+			keyclicks();
 			break;
 		case SDL_KEYUP:
 			/*tdirectn=0;*/
-			keyklicks();
+			keyclicks();
 			break;
 		case SDL_QUIT:
 			flag_quit=TRUE;

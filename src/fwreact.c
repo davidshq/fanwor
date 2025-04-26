@@ -76,7 +76,7 @@ void sethero(void)
 	dx2=(sprites[0].x+30) >> 5;
 	dy2=(sprites[0].y+31) >> 5;
 
-	/* Richtung auswerten + auf Hindernisse testen */
+	/* Evaluate direction + test for obstacles */
 	switch(tdirectn)
 	{
 	case 1:
@@ -191,7 +191,7 @@ void sprtcollision(void)
 	}
 
 	if(regain)  --regain;
-	if(redraw_hp)  write_hp_gold();		/* Hitpoints neu zeichnen */
+	if(redraw_hp)  write_hp_gold();		/* Redraw hitpoints */
 }
 
 
@@ -203,7 +203,7 @@ void testpeople(void)
 	short tflag;
 	unsigned short dhx1, dhx2, dhy1, dhy2, dpx, dpy;
 
-	/* Testen, ob Spieler vor einer Person steht */
+	/* Test if the player is standing in front of a person */
 	dhx1=(sprites[0].x+1) >> 4;
 	dhy1=(sprites[0].y+1) >> 4;
 	dhx2=(sprites[0].x+15) >> 4;

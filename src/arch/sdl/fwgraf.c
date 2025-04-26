@@ -187,14 +187,14 @@ void clearsprite(short nr)
 		rwflag=1;
 	}
 
-	/** Jetzt ins Fenster kopieren: **/
+	/** Now copy to the window: **/
 	if(rwflag)
 	{
 		rs.x=aktsprt->oldx-rwxkoor;
 		rs.y=aktsprt->oldy-rwykoor;
 		rs.w=32;
 		rs.h=32;
-		SDL_BlitSurface(offscrn, &rs, sdlscrn, &rs);  /* Sprite zeichnen */
+		SDL_BlitSurface(offscrn, &rs, sdlscrn, &rs);  /* Draw sprite */
 		SDL_UpdateRects(sdlscrn, 1, &rs);
 	}
 
@@ -209,7 +209,7 @@ void drawsprites(void)
 	SDL_Rect rs, rd;
 	int rwxkoor, rwykoor;
 	register SPRT *aktsprt;
-	char rdsprflags[256]; /* 0=Sprite muss nicht neu gezeichnet werden, 1=Sprite neu zeichnen */
+	char rdsprflags[256]; /* 0=Sprite does not need to be redrawn, 1=Sprite needs to be redrawn */
 
 	rwxkoor=rwx<<5;
 	rwykoor=rwy<<5;
@@ -282,17 +282,17 @@ void drawsprites(void)
 		}
 	}
 
-	/** Jetzt in den Bildschirm kopieren: **/
+	/** Now copy to the screen: **/
 	for(i=0; i<spritenr; i++)
 	{
 		aktsprt=&sprites[i];
 		if(!rdsprflags[i+1])
-			continue; /* Nur wenn noetig: Spart einiges an CPU-Zeit */
+			continue; /* Only if needed: Saves CPU time */
 		rs.x = min(aktsprt->x, aktsprt->oldx)-rwxkoor;
 		rs.y = min(aktsprt->y, aktsprt->oldy)-rwykoor;
 		rs.w = max(aktsprt->x, aktsprt->oldx)+32-rwxkoor-rs.x;
 		rs.h = max(aktsprt->y, aktsprt->oldy)+32-rwykoor-rs.y;
-		SDL_BlitSurface(offscrn, &rs, sdlscrn, &rs);  /* Sprite zeichnen */
+		SDL_BlitSurface(offscrn, &rs, sdlscrn, &rs);  /* Draw sprite */
 		SDL_UpdateRects(sdlscrn, 1, &rs);
 	}  /* for */
 

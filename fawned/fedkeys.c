@@ -1,4 +1,4 @@
-/* **** fed_aes.c: Auf AES-Ereignisse, Tastendruecke etc. reagieren **** */
+/* **** fed_aes.c: React to AES events, key presses etc. **** */
 
 #include <stddef.h>
 #include <string.h>
@@ -19,7 +19,7 @@
 
 
 
-/* ***Auf Tasten reagieren*** */
+/* ***React to keys*** */
 void handle_keypress(int key)
 {
 	int dx, dy;
@@ -28,12 +28,12 @@ void handle_keypress(int key)
 	switch(key)
 	{
 	case 'n':               /* NEWFILE */
-		en_anz=0;
+		entry_count=0;
 		for(dy=0; dy<128; dy++)
 			for(dx=0; dx<128; dx++)
 			{
-				sfeld[dx][dy]=1;
-				ffeld[dx][dy]=0;
+				sfield[dx][dy]=1;
+				ffield[dx][dy]=0;
 			}
 		drawoffscr(rwx, rwy, rww, rwh);
 		drwindow();
@@ -58,38 +58,38 @@ void handle_keypress(int key)
 			savelevel(fname);
 		}
 		break;
-	case '0':                 /* EREASE: */
-		fprintf(stderr,"\nErease mode\n");
-		tmodus=0;
+	case '0':                 /* ERASE: */
+		fprintf(stderr,"\nErase mode\n");
+		tmode=0;
 		acttile=0;
 		break;
 	case '1':                /* LVBACKG: */
 		fprintf(stderr,"\nBackground setting mode\n");
-		tmodus=1;
+		tmode=1;
 		acttile=0;
 		break;
-	case '2':                 /* LVEINH: */
+	case '2':                 /* LEVEL_CONTENT: */
 		fprintf(stderr,"\nSprite setting mode\n");
-		tmodus=2;
+		tmode=2;
 		acttile=0;
 		break;
 	case '3':                 /* LVDOORS: */
 		fprintf(stderr,"\nDoor setting mode\n");
-		tmodus=3;
+		tmode=3;
 		break;
 	case '4':                   /* LVITEMS: */
 		fprintf(stderr,"\nItem setting mode\n");
-		tmodus=4;
+		tmode=4;
 		acttile=0;
 		break;
 	case '5':                 /* LVPEOPLE: */
 		fprintf(stderr,"\n(Unsupported) People setting mode\n");
-		tmodus=5;
+		tmode=5;
 		acttile=0;
 		break;
-	case 'd':                 /* LVDATEN: */
-		fprintf(stderr,"\nLevel Daten:\n");
-		fprintf(stderr,"Breite: %i  -  Hoehe: %i\n",r_width,r_height);
+	case 'd':                 /* LEVEL DATA: */
+		fprintf(stderr,"\nLevel Data:\n");
+		fprintf(stderr,"Width: %i  -  Height: %i\n",r_width,r_height);
 		rwx=rwy=0;
 		drawoffscr(rwx, rwy, rww, rwh);
 		drwindow();

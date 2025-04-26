@@ -1,4 +1,4 @@
-/* ******* fedmain.c - Hauptroutinen ******* */
+/* ******* fedmain.c - Main routines ******* */
 
 #include <SDL.h>
 
@@ -17,9 +17,9 @@
 #include "fwdata.h"
 
 
-/* **Variablen:** */
-int mausx, mausy, mausk;        /* Zur Mausabfrage */
-int key;                        /* Zur Tastaturabfrage */
+/* **Variables:** */
+int mousex, mousey, mousek;        /* For mouse query */
+int key;                        /* For keyboard query */
 
 int difgndnum;
 
@@ -30,43 +30,43 @@ SDL_Surface *spritegfx;
 SDL_Surface *fontgfx;
 
 
-int endeflag=FALSE;                     /* TRUE=Spiel verlassen */
+int endeflag=FALSE;                     /* TRUE=Exit game */
 
-unsigned char sfeld[128][128];          /* Das Spielfeld */
-unsigned char ffeld[128][128];
-short rwx=0, rwy=0;                     /* Ab diesem Planquadrat beginnt das Fenster */
-unsigned short rww=16, rwh=11;          /* Aktuelle Fenstergroesse (in Planquadraten) */
-unsigned short r_width=16, r_height=11; /* Raumausmasse */
+unsigned char sfield[128][128];          /* The game field */
+unsigned char ffield[128][128];
+short rwx=0, rwy=0;                     /* Start window at this grid square */
+unsigned short rww=16, rwh=11;          /* Current window size (in grid squares) */
+unsigned short r_width=16, r_height=11; /* Room dimensions */
 
-unsigned char acttile=0;		/* Ausgewaehlter Bodentyp */
-short smodus=0;				/* 0=Feld editieren; 1=Typ auswaehlen */
-short tmodus=1;
+unsigned char acttile=0;		/* Selected ground type */
+short smode=0;				/* 0=Edit field; 1=Select type */
+short tmode=1;
 
-int en_anz=0;                           /* Anzahl der Eintraege */
-LEVEL_EINTRAG en[256];                  /* Sprites, etc. */
+int entry_count=0;                           /* Number of entries */
+LEVEL_ENTRY entries[256];                  /* Sprites, etc. */
 
 
 void printhelp(void)
 {
-	fprintf(stderr,"\nTastenkommandos:\n");
-	fprintf(stderr," n : Loesche aktuelles Feld.\n");
-	fprintf(stderr," l : Level laden.\n");
-	fprintf(stderr," s : Level speichern\n");
-	fprintf(stderr," 0 : Sprite-Loesch Modus\n");
-	fprintf(stderr," 1 : Hintergrund-Setz Modus\n");
-	fprintf(stderr," 2 : Sprite-Setz Modus\n");
-	fprintf(stderr," 3 : Tuer-Setz Modus (geht noch nicht)\n");
-	fprintf(stderr," 4 : Item-Setz Modus\n");
-	fprintf(stderr," d : Zeige Level-Daten (witzlos)\n");
-	fprintf(stderr," h : Diese Hilfe zeigen\n");
-	fprintf(stderr," q : Programm beenden\n");
+	fprintf(stderr,"\nKeyboard commands:\n");
+	fprintf(stderr," n : Clear current field.\n");
+	fprintf(stderr," l : Load level.\n");
+	fprintf(stderr," s : Save level\n");
+	fprintf(stderr," 0 : Sprite-Delete Mode\n");
+	fprintf(stderr," 1 : Ground-Set Mode\n");
+	fprintf(stderr," 2 : Sprite-Set Mode\n");
+	fprintf(stderr," 3 : Door-Set Mode (not working)\n");
+	fprintf(stderr," 4 : Item-Set Mode\n");
+	fprintf(stderr," d : Show level data (useless)\n");
+	fprintf(stderr," h : Show this help\n");
+	fprintf(stderr," q : Exit program\n");
 }
 
 
-/* ***Die Hauptroutine*** */
+/* ***Main routine*** */
 int main(int argc, char *argv[])
 {
-	short dx,dy;		/* Dummyvariablen */
+	short dx,dy;		/* Dummy variables */
 	//short dw,dh;
 	SDL_Event event;
 
@@ -87,8 +87,8 @@ int main(int argc, char *argv[])
 	{
 		for (dx=0; dx < 128; dx++)
 		{
-			sfeld[dx][dy]=1;
-			ffeld[dx][dy]=0;
+			sfield[dx][dy]=1;
+			ffield[dx][dy]=0;
 		}
 	}
 
@@ -111,32 +111,32 @@ int main(int argc, char *argv[])
 
 	printhelp();
 
-	/* Die Hauptschleife: */
+	/* Main loop: */
 	do
 	{
 		if( !SDL_PollEvent(&event) )  continue;
 
-		mausk=SDL_GetMouseState(&mausx, &mausy);
-		if (smodus == 0)
+		mousek=SDL_GetMouseState(&mousex, &mousey);
+		if (smode == 0)
 		{
-			unsigned short destx=mausx/32+rwx, desty=mausy/32+rwy;
+			unsigned short destx=mousex/32+rwx, desty=mousey/32+rwy;
 			fprintf(stderr,"\rX=%i Y=%i  ",destx, desty);
-			if (mausk == SDL_BUTTON(1))  /* Ins Spielfeld geklickt? */
+			if (mousek == SDL_BUTTON(1))  /* Clicked on the game field? */
 			{
 				//SDL_Rect drc;
 				int f, x,y;
-				switch(tmodus)
+				switch(tmode)
 				{
 				case 0:
-					for( f=0; f<en_anz; f++ )
-						if( en[f].xpos==destx && en[f].ypos==desty
-						                && (en[f].eintrtyp==1 || en[f].eintrtyp==2 || en[f].eintrtyp==4) )
+					for( f=0; f<entry_count; f++ )
+						if( entries[f].xpos==destx && entries[f].ypos==desty
+						                && (entries[f].entry_type==1 || entries[f].entry_type==2 || entries[f].entry_type==4) )
 						{
-							x=en[f].xpos;
-							y=en[f].ypos;
-							if( f != en_anz-1 )
-								memcpy(&en[f], &en[en_anz-1], sizeof(LEVEL_EINTRAG));
-							--en_anz;
+							x=entries[f].xpos;
+							y=entries[f].ypos;
+							if( f != entry_count-1 )
+								memcpy(&entries[f], &entries[entry_count-1], sizeof(LEVEL_ENTRY));
+							--entry_count;
 							drawoffscr(x,y,1,1);
 							/*drc.x=(x-rwx)*32+wi.g_x;
 							drc.y=(y-rwy)*32+wi.g_y;
@@ -145,40 +145,40 @@ int main(int argc, char *argv[])
 						}
 					break;
 				case 1:
-					sfeld[destx][desty]=acttile;
-					if(acttile>=20) ffeld[destx][desty]|=FWALL;
-					else ffeld[destx][desty]&=~FWALL;
+					sfield[destx][desty]=acttile;
+					if(acttile>=20) ffield[destx][desty]|=FWALL;
+					else ffield[destx][desty]&=~FWALL;
 					drawoffscr(destx, desty, 1, 1);
-					/*drc.g_x=((mausx-wi.g_x)&0xFFE0)+wi.g_x;
-					drc.g_y=((mausy-wi.g_y)&0xFFE0)+wi.g_y;
+					/*drc.g_x=((mousex-wi.g_x)&0xFFE0)+wi.g_x;
+					drc.g_y=((mousey-wi.g_y)&0xFFE0)+wi.g_y;
 					drc.g_w=drc.g_h=32;*/
 					drwindow();
 					break;
 				case 2:                         /* Sprite */
 					x=0;
-					for( f=0; f<en_anz; f++ )
-						if( en[f].xpos==destx && en[f].ypos==desty) x=1;
+					for( f=0; f<entry_count; f++ )
+						if( entries[f].xpos==destx && entries[f].ypos==desty) x=1;
 					if(x) break;
-					en[en_anz].eintrtyp=1;
-					en[en_anz].art=acttile;
-					en[en_anz].xpos=destx;
-					en[en_anz].ypos=desty;
-					++en_anz;
+					entries[entry_count].entry_type=1;
+					entries[entry_count].art=acttile;
+					entries[entry_count].xpos=destx;
+					entries[entry_count].ypos=desty;
+					++entry_count;
 					drawoffscr(destx, desty, 1, 1);
-					/*drc.g_x=((mausx-wi.g_x)&0xFFE0)+wi.g_x;
-					drc.g_y=((mausy-wi.g_y)&0xFFE0)+wi.g_y;
+					/*drc.g_x=((mousex-wi.g_x)&0xFFE0)+wi.g_x;
+					drc.g_y=((mousey-wi.g_y)&0xFFE0)+wi.g_y;
 					drc.g_w=drc.g_h=32;*/
 					drwindow();
 					break;
 				case 3:                             /* Door */
 #if 0
 					x=0;
-					for( f=0; f<en_anz; f++ )
-						if( en[f].xpos==destx && en[f].ypos==desty) x=1;
+					for( f=0; f<entry_count; f++ )
+						if( entries[f].xpos==destx && entries[f].ypos==desty) x=1;
 					if(x) break;
-					en[en_anz].eintrtyp=2;
-					en[en_anz].xpos=destx;
-					en[en_anz].ypos=desty;
+					entries[entry_count].entry_type=2;
+					entries[entry_count].xpos=destx;
+					entries[entry_count].ypos=desty;
 					itoa(destx, doordlg[DXPOS].ob_spec.free_string, 10);
 					itoa(desty, doordlg[DYPOS].ob_spec.free_string, 10);
 					form_center(doordlg, &dx, &dy, &dw, &dh);
@@ -187,37 +187,37 @@ int main(int argc, char *argv[])
 					form_do(doordlg, 0);
 					form_dial(FMD_FINISH, dx, dy, 0, 0, dx, dy, dw, dh);
 					doordlg[DOKAY].ob_state=NORMAL;
-					en[en_anz].art=atoi(doordlg[DTYPE].ob_spec.tedinfo->te_ptext);
+					entries[entry_count].art=atoi(doordlg[DTYPE].ob_spec.tedinfo->te_ptext);
 					dx=atoi(doordlg[DROOMX].ob_spec.tedinfo->te_ptext);
 					dy=atoi(doordlg[DROOMY].ob_spec.tedinfo->te_ptext);
 					if(dx>=16 || dy>=16)
 					{
-						form_alert(1,"[3][Fehler: Zielraum-|koordinaten zu|gross (max 16).][Abbruch]");
+						form_alert(1,"[3][Error: Target room-|coordinates too|large (max 16).][Abort]");
 						break;
 					}
-					en[en_anz].spec1=(dx<<4)|dy;
-					en[en_anz].xl=atoi(doordlg[DDXPOS].ob_spec.tedinfo->te_ptext);
-					en[en_anz].yl=atoi(doordlg[DDYPOS].ob_spec.tedinfo->te_ptext);
-					++en_anz;
-					drc.g_x=((mausx-wi.g_x)&0xFFE0)+wi.g_x;
-					drc.g_y=((mausy-wi.g_y)&0xFFE0)+wi.g_y;
+					entries[entry_count].spec1=(dx<<4)|dy;
+					entries[entry_count].xl=atoi(doordlg[DDXPOS].ob_spec.tedinfo->te_ptext);
+					entries[entry_count].yl=atoi(doordlg[DDYPOS].ob_spec.tedinfo->te_ptext);
+					++entry_count;
+					drc.g_x=((mousex-wi.g_x)&0xFFE0)+wi.g_x;
+					drc.g_y=((mousey-wi.g_y)&0xFFE0)+wi.g_y;
 					drc.g_w=drc.g_h=32;
 #endif
 					drwindow();
 					break;
 				case 4:                         /* Item */
 					x=0;
-					for( f=0; f<en_anz; f++ )
-						if( en[f].xpos==destx && en[f].ypos==desty) x=1;
+					for( f=0; f<entry_count; f++ )
+						if( entries[f].xpos==destx && entries[f].ypos==desty) x=1;
 					if(x) break;
-					en[en_anz].eintrtyp=4;
-					en[en_anz].art=acttile;
-					en[en_anz].xpos=destx;
-					en[en_anz].ypos=desty;
-					++en_anz;
+					entries[entry_count].entry_type=4;
+					entries[entry_count].art=acttile;
+					entries[entry_count].xpos=destx;
+					entries[entry_count].ypos=desty;
+					++entry_count;
 					drawoffscr(destx, desty, 1, 1);
-					/*drc.g_x=((mausx-wi.g_x)&0xFFE0)+wi.g_x;
-					drc.g_y=((mausy-wi.g_y)&0xFFE0)+wi.g_y;
+					/*drc.g_x=((mousex-wi.g_x)&0xFFE0)+wi.g_x;
+					drc.g_y=((mousey-wi.g_y)&0xFFE0)+wi.g_y;
 					drc.g_w=drc.g_h=32;*/
 					drwindow();
 					break;
@@ -227,42 +227,42 @@ int main(int argc, char *argv[])
 		else
 		{
 			unsigned short desttile;
-			desttile=mausy/32*rww+mausx/32;
-			if(tmodus==1 && desttile>=difgndnum) desttile=0;
-			if(tmodus==2)
+			desttile=mousey/32*rww+mousex/32;
+			if(tmode==1 && desttile>=difgndnum) desttile=0;
+			if(tmode==2)
 			{
 				if(desttile>=DIFSPRTNUM) desttile=3;
 			}
-			if(tmodus==4)
+			if(tmode==4)
 			{
 				if(desttile>=DIFSPRTNUM) desttile=0;
 			}
 			fprintf(stderr,"\rTyp=%i  ",desttile);
-			if(mausk==SDL_BUTTON(1))
+			if(mousek==SDL_BUTTON(1))
 			{
 				acttile=desttile;
-				mausk=SDL_BUTTON(3);	/* Modus wechseln (s.u.) */
+				mousek=SDL_BUTTON(3);	/* Change mode (see below) */
 			}
 		}
 
-		if( (tmodus==1 || tmodus==2 || tmodus==4) && ( (mausk==SDL_BUTTON(3))
-		                || (event.type==SDL_KEYDOWN && event.key.keysym.sym==SDLK_SPACE)) ) 	/* Modus wechseln? */
+		if( (tmode==1 || tmode==2 || tmode==4) && ( (mousek==SDL_BUTTON(3))
+		                || (event.type==SDL_KEYDOWN && event.key.keysym.sym==SDLK_SPACE)) ) 	/* Change mode? */
 		{
-			smodus^=1;
-			while( SDL_GetMouseState(&mausx, &mausy) )
+			smode^=1;
+			while( SDL_GetMouseState(&mousex, &mousey) )
 			{
 				SDL_PumpEvents();
 			};
-			if(smodus==0)
+			if(smode==0)
 			{
-				fprintf(stderr, "\nSpielfeld editieren!\n");
+				fprintf(stderr, "\nEdit game field!\n");
 			}
 			else
 			{
-				switch(tmodus)
+				switch(tmode)
 				{
 				case 1:
-					fprintf(stderr, "\nBodentyp auswaehlen!\n");
+					fprintf(stderr, "\nSelect ground type!\n");
 					break;
 				case 2:
 					fprintf(stderr, "\nSelect Sprite!\n");
@@ -288,7 +288,7 @@ int main(int argc, char *argv[])
 
 	exitGUI();
 
-	fprintf(stderr,"\nUnd tschuess!\n");
+	fprintf(stderr,"\nAnd goodbye!\n");
 
 	return(0);
 }

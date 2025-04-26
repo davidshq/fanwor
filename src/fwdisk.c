@@ -52,7 +52,7 @@ static unsigned long swap_u32(uint32_t in)
 int loadroom(void)
 {
 	LEVEL_HEADER hd;
-	LEVEL_EINTRAG eintrbuf;
+	LEVEL_ENTRY entrybuf;
 	FILE *fhndl;
 	size_t len;
 	static size_t oldlen = 0;
@@ -101,7 +101,7 @@ int loadroom(void)
 	{
 		hd.hmagic = swap_u32(hd.hmagic);
 		hd.version = swap_u16(hd.version);
-		hd.anz_obj = swap_u16(hd.anz_obj);
+		hd.obj_count = swap_u16(hd.obj_count);
 		hd.r_wdth = swap_u16(hd.r_wdth);
 		hd.r_hght = swap_u16(hd.r_hght);
 	}
@@ -155,34 +155,34 @@ int loadroom(void)
 
 	spritenr=1;
 	doornr=0;
-	dx=hd.anz_obj;
+	dx=hd.obj_count;
 	while( dx>0 )
 	{
-		if( fread(&eintrbuf, sizeof(LEVEL_EINTRAG), 1, fhndl) != 1 )
+		if( fread(&entrybuf, sizeof(LEVEL_ENTRY), 1, fhndl) != 1 )
 		{
 			fclose(fhndl);
 			errfatldlg("Could not load\nlevel file");
 			return -1;
 		}
-		switch(eintrbuf.eintrtyp)
+		switch(entrybuf.entry_type)
 		{
 		case 1:
-			addsprite(eintrbuf.art, eintrbuf.xpos<<5, eintrbuf.ypos<<5);
+			addsprite(entrybuf.art, entrybuf.xpos<<5, entrybuf.ypos<<5);
 			break;
 		case 2:
-			doors[doornr].x=eintrbuf.xpos;
-			doors[doornr].y=eintrbuf.ypos;
-			doors[doornr].destnr=eintrbuf.art;
-			doors[doornr].exitx=eintrbuf.xl;
-			doors[doornr].exity=eintrbuf.yl;
-			doors[doornr].destx=eintrbuf.spec1>>4;
-			doors[doornr].desty=eintrbuf.spec1 & 0x0F;
+			doors[doornr].x=entrybuf.xpos;
+			doors[doornr].y=entrybuf.ypos;
+			doors[doornr].destnr=entrybuf.art;
+			doors[doornr].exitx=entrybuf.xl;
+			doors[doornr].exity=entrybuf.yl;
+			doors[doornr].destx=entrybuf.spec1>>4;
+			doors[doornr].desty=entrybuf.spec1 & 0x0F;
 			++doornr;
 			break;
 		case 4:
-			if(spritetable[eintrbuf.art].id<8 && spec_gemz[spritetable[eintrbuf.art].id])
+			if(spritetable[entrybuf.art].id<8 && spec_gemz[spritetable[entrybuf.art].id])
 				break;  /* SPECIAL: Gems */
-			addsprite(eintrbuf.art, eintrbuf.xpos<<5, eintrbuf.ypos<<5);
+			addsprite(entrybuf.art, entrybuf.xpos<<5, entrybuf.ypos<<5);
 			break;
 		}
 		--dx;
