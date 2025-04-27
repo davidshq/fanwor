@@ -24,6 +24,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 since version 1.11 it also runs on Linux and other Unixes that are supported
 by the SDL Library.
 
+It was written by Thomas Huth (huth at tuxfamily.org). I (Dave Mackey) have been making some modifications, you can see a log of the changes in [CHANGELOG.md](CHANGELOG.md)
+
 
 
 # The Story

@@ -1,4 +1,8 @@
 # Unreleased
+
+## 4/27/25
+- Added a room converter utility that can convert the binary files in rooms into text (human readable/editable) files and then convert them back to binary (e.g. if you make changes to them).
+
 ## 4/27/25
 - Updated makefiles so that intermediary and binary files are push to out instead of sitting alongside code files.
 
