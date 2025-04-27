@@ -11,7 +11,9 @@ You may need to create a `c_cpp_properties.json` file in your `.vscode` folder. 
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/src",
                 "${workspaceFolder}/src/arch/atari",
-                "/usr/include/SDL"
+                "${workspaceFolder}/src/arch/sdl",
+                "/usr/include/SDL",
+                "/usr/include/SDL2"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

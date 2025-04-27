@@ -1,7 +1,6 @@
-
 all:
 	$(MAKE) -C src
 
 clean:
-	$(RM) fanwor
+	$(RM) out/fanwor
 	$(MAKE) -C src clean

@@ -1,4 +1,7 @@
 # Unreleased
+## 4/27/25
+- Updated makefiles so that intermediary and binary files are push to out instead of sitting alongside code files.
+
 ## 4/26/25
 - Translated German to English
 - A few variable names refactored, e.g. `en` is now `entries`
