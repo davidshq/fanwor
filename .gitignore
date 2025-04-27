@@ -1,5 +1,13 @@
 *.o
 fanwor
+room_converter
 fawned/fawned
-.vscode
 out/
+rooms_bin/*
+rooms_text/*
+tmp*
+
+
+# IDE Configs
+.vscode
+.idea
